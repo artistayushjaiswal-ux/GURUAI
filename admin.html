@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>GURUAI Owner</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+html,body{
+    margin:0;
+    width:100%;
+    min-height:100%;
+    font-family:Arial,sans-serif;
+    background:#070912;
+    color:white;
+}
+
+body{
+    min-height:100vh;
+}
+
+.app{
+    display:flex;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:250px;
+    background:#0b0e18;
+    border-right:1px solid #252a3a;
+    padding:20px;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:35px;
+}
+
+.logo{
+    width:45px;
+    height:45px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#6d5dfc,#a855f7);
+    font-size:23px;
+    font-weight:bold;
+}
+
+.brand-name{
+    font-size:20px;
+    font-weight:bold;
+}
+
+.owner-badge{
+    padding:15px;
+    border:1px solid #443b72;
+    border-radius:15px;
+    background:#121024;
+    margin-bottom:25px;
+}
+
+.owner-title{
+    color:#a89cff;
+    font-size:10px;
+    letter-spacing:1.5px;
+}
+
+.owner-name{
+    font-size:15px;
+    font-weight:bold;
+    margin-top:7px;
+}
+
+.menu{
+    width:100%;
+    padding:12px;
+    margin-bottom:7px;
+    border:1px solid transparent;
+    border-radius:11px;
+    background:transparent;
+    color:#9ca5ba;
+    text-align:left;
+    cursor:pointer;
+}
+
+.menu:hover{
+    background:#171c2b;
+    color:white;
+}
+
+.logout{
+    margin-top:30px;
+    color:#ff9ba8;
+}
+
+/* MAIN */
+
+.main{
+    flex:1;
+    min-width:0;
+}
+
+.header{
+    height:70px;
+    padding:0 28px;
+    border-bottom:1px solid #252a3a;
+    background:#090c16;
+    display:flex;
+    align-items:center;
+}
+
+.header-title{
+    font-size:17px;
+    font-weight:bold;
+}
+
+.header-subtitle{
+    margin-top:4px;
+    color:#6f788d;
+    font-size:10px;
+}
+
+.status{
+    margin-left:auto;
+    padding:8px 13px;
+    border-radius:20px;
+    border:1px solid #214b34;
+    background:#0d1913;
+    color:#63df95;
+    font-size:10px;
+}
+
+/* CONTENT */
+
+.content{
+    max-width:1200px;
+    margin:auto;
+    padding:30px;
+}
+
+.hero{
+    padding:30px;
+    border:1px solid #2b3045;
+    border-radius:22px;
+    background:
+        radial-gradient(
+            circle at 85% 20%,
+            #6d5dfc22,
+            transparent 35%
+        ),
+        linear-gradient(145deg,#111625,#0d111d);
+}
+
+.label{
+    color:#8d7dff;
+    font-size:10px;
+    letter-spacing:2px;
+    font-weight:bold;
+}
+
+.hero h1{
+    margin:10px 0 7px;
+    font-size:35px;
+}
+
+.hero p{
+    color:#788196;
+    font-size:13px;
+}
+
+/* STAT CARDS */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:13px;
+    margin-top:18px;
+}
+
+.stat{
+    padding:20px;
+    border:1px solid #292f42;
+    border-radius:16px;
+    background:#101420;
+}
+
+.stat-icon{
+    font-size:23px;
+}
+
+.stat-title{
+    margin-top:12px;
+    font-size:11px;
+    color:#737c91;
+}
+
+.stat-value{
+    margin-top:5px;
+    font-size:21px;
+    font-weight:bold;
+}
+
+/* PANELS */
+
+.grid{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:15px;
+    margin-top:18px;
+}
+
+.panel{
+    padding:20px;
+    border:1px solid #292f42;
+    border-radius:17px;
+    background:#101420;
+}
+
+.panel h2{
+    margin:0;
+    font-size:16px;
+}
+
+.panel-subtitle{
+    color:#737c91;
+    font-size:10px;
+    margin-top:5px;
+}
+
+/* SYSTEM */
+
+.system-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 0;
+    border-bottom:1px solid #202536;
+}
+
+.system-row:last-child{
+    border-bottom:0;
+}
+
+.system-name{
+    font-size:12px;
+}
+
+.system-status{
+    color:#63df95;
+    font-size:10px;
+}
+
+/* ACTIVITY */
+
+.activity{
+    margin-top:15px;
+}
+
+.activity-item{
+    padding:12px 0;
+    border-bottom:1px solid #202536;
+    color:#858da2;
+    font-size:11px;
+}
+
+.activity-item:last-child{
+    border-bottom:0;
+}
+
+/* BUTTONS */
+
+.button{
+    margin-top:15px;
+    padding:11px 15px;
+    border:0;
+    border-radius:10px;
+    background:linear-gradient(135deg,#6d5dfc,#a855f7);
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.button:hover{
+    opacity:.9;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+    .sidebar{
+        display:none;
+    }
+
+    .stats{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:550px){
+
+    .content{
+        padding:15px;
+    }
+
+    .hero{
+        padding:22px;
+    }
+
+    .hero h1{
+        font-size:28px;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="brand">
+        <div class="logo">G</div>
+        <div class="brand-name">GURUAI</div>
+    </div>
+
+    <div class="owner-badge">
+        <div class="owner-title">
+            👑 OWNER ACCESS
+        </div>
+
+        <div class="owner-name">
+            GURUAI Owner
+        </div>
+    </div>
+
+    <button class="menu">
+        📊 Dashboard
+    </button>
+
+    <button class="menu">
+        👥 Users
+    </button>
+
+    <button class="menu">
+        ☁️ AI System
+    </button>
+
+    <button class="menu">
+        ⚙️ Controls
+    </button>
+
+    <button
+        class="menu logout"
+        onclick="goBack()">
+        ← Back to GURUAI
+    </button>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+<header class="header">
+
+    <div>
+        <div class="header-title">
+            Owner Dashboard
+        </div>
+
+        <div class="header-subtitle">
+            GURUAI administration center
+        </div>
+    </div>
+
+    <div class="status">
+        ● SYSTEM ONLINE
+    </div>
+
+</header>
+
+
+<div class="content">
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="label">
+            GURUAI CONTROL CENTER
+        </div>
+
+        <h1>
+            Welcome, Owner 👑
+        </h1>
+
+        <p>
+            Monitor your GURUAI application,
+            AI system and registered users.
+        </p>
+
+    </section>
+
+
+    <!-- STATS -->
+
+    <section class="stats">
+
+        <div class="stat">
+
+            <div class="stat-icon">
+                👥
+            </div>
+
+            <div class="stat-title">
+                REGISTERED USERS
+            </div>
+
+            <div
+                class="stat-value"
+                id="userCount">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-icon">
+                💬
+            </div>
+
+            <div class="stat-title">
+                SAVED CHATS
+            </div>
+
+            <div
+                class="stat-value"
+                id="chatCount">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-icon">
+                ☁️
+            </div>
+
+            <div class="stat-title">
+                AI PROVIDER
+            </div>
+
+            <div class="stat-value">
+                Gemini
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-icon">
+                ⚡
+            </div>
+
+            <div class="stat-title">
+                SYSTEM
+            </div>
+
+            <div class="stat-value">
+                Online
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PANELS -->
+
+    <section class="grid">
+
+        <div class="panel">
+
+            <h2>
+                ☁️ AI System
+            </h2>
+
+            <div class="panel-subtitle">
+                Current GURUAI AI services
+            </div>
+
+
+            <div class="system-row">
+
+                <div class="system-name">
+                    Gemini Cloud AI
+                </div>
+
+                <div class="system-status">
+                    ● Connected
+                </div>
+
+            </div>
+
+
+            <div class="system-row">
+
+                <div class="system-name">
+                    GURUAI Backend
+                </div>
+
+                <div class="system-status">
+                    ● Running
+                </div>
+
+            </div>
+
+
+            <div class="system-row">
+
+                <div class="system-name">
+                    Authentication
+                </div>
+
+                <div class="system-status">
+                    ● Active
+                </div>
+
+            </div>
+
+
+            <div class="system-row">
+
+                <div class="system-name">
+                    GURU Lens
+                </div>
+
+                <div style="
+                    color:#d6a85d;
+                    font-size:10px;">
+                    ● Planned
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel">
+
+            <h2>
+                ⚡ Quick Control
+            </h2>
+
+            <div class="panel-subtitle">
+                Owner shortcuts
+            </div>
+
+            <button
+                class="button"
+                onclick="goBack()">
+                Open GURUAI
+            </button>
+
+            <button
+                class="button"
+                onclick="refreshDashboard()">
+                Refresh Dashboard
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ACTIVITY -->
+
+    <section class="panel activity">
+
+        <h2>
+            📋 System Activity
+        </h2>
+
+        <div class="panel-subtitle">
+            Local application information
+        </div>
+
+        <div class="activity-item">
+            🟢 GURUAI dashboard loaded
+        </div>
+
+        <div class="activity-item">
+            ☁️ Gemini Cloud AI configured
+        </div>
+
+        <div class="activity-item">
+            🔐 Authentication system active
+        </div>
+
+        <div class="activity-item">
+            🛡️ Owner dashboard initialized
+        </div>
+
+    </section>
+
+</div>
+
+</main>
+
+</div>
+
+
+<script>
+
+/* LOAD USER DATA */
+
+const users =
+JSON.parse(
+    localStorage.getItem(
+        "guruai_users"
+    ) || "[]"
+);
+
+document.getElementById(
+    "userCount"
+).textContent = users.length;
+
+
+/* CHAT COUNT */
+
+const chats =
+JSON.parse(
+    localStorage.getItem(
+        "guruai_history"
+    ) || "[]"
+);
+
+document.getElementById(
+    "chatCount"
+).textContent = chats.length;
+
+
+/* BACK */
+
+function goBack(){
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+/* REFRESH */
+
+function refreshDashboard(){
+
+    location.reload();
+
+}
+
+</script>
+
+</body>
+</html>

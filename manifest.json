@@ -1,0 +1,9 @@
+{
+  "name": "GURUAI",
+  "short_name": "GURUAI",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#10101a",
+  "theme_color": "#10101a",
+  "description": "GURUAI AI Assistant"
+}

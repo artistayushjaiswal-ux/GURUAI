@@ -1,0 +1,2077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+
+<title>GURUAI</title>
+
+<style>
+
+*{box-sizing:border-box}
+
+html,body{
+    margin:0;
+    width:100%;
+    height:100%;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#070912;
+    color:#fff;
+}
+
+button,input{
+    font-family:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.app{
+    display:flex;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:250px;
+    min-height:100vh;
+    background:#0b0e18;
+    border-right:1px solid #252a3a;
+    padding:18px;
+    display:flex;
+    flex-direction:column;
+}
+
+.logo-area{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:25px;
+}
+
+.logo{
+    width:44px;
+    height:44px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#6d5dfc,#a855f7);
+    font-size:23px;
+    font-weight:bold;
+    box-shadow:0 0 25px #6d5dfc30;
+}
+
+.logo-text{
+    font-size:20px;
+    font-weight:bold;
+}
+
+.new-chat,
+.menu,
+.logout{
+    width:100%;
+    border-radius:11px;
+    padding:11px;
+    cursor:pointer;
+    color:#fff;
+}
+
+.new-chat{
+    background:#171c2b;
+    border:1px solid #30364b;
+    margin-bottom:18px;
+    font-weight:bold;
+}
+
+.menu{
+    background:transparent;
+    border:1px solid transparent;
+    text-align:left;
+    color:#aeb5c7;
+    margin-bottom:5px;
+}
+
+.menu:hover,
+.new-chat:hover{
+    background:#1a2030;
+    color:#fff;
+}
+
+.section-title{
+    color:#626b80;
+    font-size:10px;
+    letter-spacing:1.3px;
+    margin:12px 6px 8px;
+}
+
+.history{
+    flex:1;
+    overflow:auto;
+}
+
+.history-item{
+    padding:9px;
+    border-radius:9px;
+    color:#8992a8;
+    font-size:12px;
+    cursor:pointer;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.history-item:hover{
+    background:#171c2b;
+    color:#fff;
+}
+
+.user-card{
+    margin-top:15px;
+    padding:12px;
+    border:1px solid #292f41;
+    border-radius:13px;
+    background:#101420;
+}
+
+.user-name{
+    font-size:12px;
+    font-weight:bold;
+}
+
+.user-email{
+    font-size:9px;
+    color:#6f788d;
+    margin-top:4px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.logout{
+    margin-top:9px;
+    background:#181421;
+    border:1px solid #3b3048;
+    color:#c4a9d6;
+    font-size:11px;
+}
+
+/* MAIN */
+
+.main{
+    flex:1;
+    min-width:0;
+    min-height:100vh;
+    background:#070912;
+}
+
+.header{
+    height:68px;
+    display:flex;
+    align-items:center;
+    padding:0 25px;
+    border-bottom:1px solid #252a3a;
+    background:#090c16;
+}
+
+.header-title{
+    font-size:16px;
+    font-weight:bold;
+}
+
+.header-subtitle{
+    color:#6f788d;
+    font-size:10px;
+    margin-top:3px;
+}
+
+.header-right{
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.status{
+    padding:7px 12px;
+    border-radius:20px;
+    background:#0d1913;
+    border:1px solid #214b34;
+    color:#63df95;
+    font-size:10px;
+}
+
+.header-btn{
+    width:37px;
+    height:37px;
+    border-radius:10px;
+    border:1px solid #30364b;
+    background:#121624;
+    color:white;
+}
+
+/* CONTENT */
+
+.content{
+    padding:30px 25px 130px;
+    max-width:1100px;
+    margin:auto;
+}
+
+/* DASHBOARD */
+
+.hero{
+    padding:35px;
+    border:1px solid #2b3045;
+    border-radius:24px;
+    background:
+        radial-gradient(circle at 85% 20%,#6d5dfc20,transparent 35%),
+        linear-gradient(145deg,#111625,#0d111d);
+}
+
+.hero-small{
+    color:#858da2;
+    font-size:11px;
+    letter-spacing:1.4px;
+}
+
+.hero h1{
+    font-size:42px;
+    margin:12px 0 8px;
+}
+
+.gradient{
+    background:linear-gradient(90deg,#8d7dff,#c477ff);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.hero p{
+    color:#7f889d;
+    font-size:14px;
+    line-height:1.6;
+    max-width:650px;
+}
+
+.hero-buttons{
+    display:flex;
+    gap:10px;
+    margin-top:22px;
+}
+
+.primary,
+.secondary{
+    padding:12px 18px;
+    border-radius:11px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.primary{
+    border:0;
+    background:linear-gradient(135deg,#6d5dfc,#a855f7);
+    color:white;
+}
+
+.secondary{
+    border:1px solid #33394d;
+    background:#151a29;
+    color:white;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    margin-top:15px;
+}
+
+.stat{
+    padding:17px;
+    border-radius:15px;
+    border:1px solid #292f42;
+    background:#0f1320;
+}
+
+.stat-icon{
+    font-size:20px;
+}
+
+.stat-number{
+    font-size:17px;
+    font-weight:bold;
+    margin-top:8px;
+}
+
+.stat-label{
+    font-size:10px;
+    color:#6e778c;
+    margin-top:3px;
+}
+
+.section-heading{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:30px 0 13px;
+}
+
+.section-heading h2{
+    font-size:19px;
+    margin:0;
+}
+
+.section-heading span{
+    font-size:10px;
+    color:#697286;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:13px;
+}
+
+.card{
+    padding:20px;
+    border-radius:17px;
+    border:1px solid #292f42;
+    background:#101420;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.card:hover{
+    transform:translateY(-3px);
+    border-color:#665bd1;
+    box-shadow:0 10px 35px #00000030;
+}
+
+.card-icon{
+    font-size:27px;
+    margin-bottom:13px;
+}
+
+.card-title{
+    font-size:14px;
+    font-weight:bold;
+}
+
+.card-text{
+    color:#727b90;
+    font-size:11px;
+    line-height:1.5;
+    margin-top:7px;
+}
+
+/* CHAT */
+
+.chat{
+    display:none;
+    max-width:900px;
+    margin:auto;
+}
+
+.message{
+    margin:22px 0;
+    display:flex;
+    gap:12px;
+}
+
+.avatar{
+    width:38px;
+    height:38px;
+    flex-shrink:0;
+    border-radius:11px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:10px;
+    font-weight:bold;
+}
+
+.user-avatar{
+    background:#252b45;
+}
+
+.ai-avatar{
+    background:linear-gradient(135deg,#6d5dfc,#a855f7);
+}
+
+.message-name{
+    font-size:10px;
+    color:#777f94;
+    margin-bottom:6px;
+}
+
+.user-text{
+    padding:13px 16px;
+    border:1px solid #292f42;
+    border-radius:6px 15px 15px 15px;
+    background:#171c2e;
+    white-space:pre-wrap;
+    line-height:1.6;
+}
+
+.ai-text{
+    white-space:pre-wrap;
+    line-height:1.7;
+}
+
+/* TOOLS */
+
+.tools{
+    display:none;
+}
+
+.tools-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:25px;
+}
+
+.tools-top h1{
+    margin:8px 0;
+    font-size:32px;
+}
+
+.tools-top p{
+    color:#737c91;
+    font-size:12px;
+}
+
+.tools-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.tool{
+    min-height:190px;
+    padding:22px;
+    border-radius:19px;
+    border:1px solid #292f42;
+    background:
+        radial-gradient(circle at 90% 10%,#6d5dfc15,transparent 35%),
+        #101420;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.tool:hover{
+    transform:translateY(-5px);
+    border-color:#6d5dfc;
+    box-shadow:0 15px 40px #00000035;
+}
+
+.tool-icon{
+    width:50px;
+    height:50px;
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#191e30;
+    font-size:25px;
+    margin-bottom:18px;
+}
+
+.tool-title{
+    font-size:15px;
+    font-weight:bold;
+}
+
+.tool-description{
+    color:#737c91;
+    font-size:11px;
+    line-height:1.6;
+    margin-top:8px;
+}
+
+.tool-action{
+    margin-top:17px;
+    color:#9b8cff;
+    font-size:11px;
+    font-weight:bold;
+}
+
+/* SETTINGS */
+
+.settings{
+    display:none;
+    max-width:700px;
+    margin:auto;
+}
+
+.settings h1{
+    font-size:30px;
+}
+
+.settings-box{
+    padding:18px;
+    border:1px solid #292f42;
+    border-radius:15px;
+    background:#101420;
+    margin-top:12px;
+}
+
+.setting-name{
+    font-weight:bold;
+    font-size:13px;
+}
+
+.setting-info{
+    color:#737c91;
+    font-size:10px;
+    margin-top:5px;
+}
+
+/* TOOL WORKSPACE */
+
+.tool-workspace{
+    display:none;
+}
+
+.tool-workspace-box{
+    padding:30px;
+    border:1px solid #292f42;
+    border-radius:22px;
+    background:
+        radial-gradient(circle at 90% 10%,#6d5dfc18,transparent 35%),
+        #101420;
+}
+
+.tool-workspace h1{
+    font-size:30px;
+    margin:10px 0;
+}
+
+.tool-workspace p{
+    color:#737c91;
+    font-size:12px;
+}
+
+.tool-input{
+    width:100%;
+    min-height:140px;
+    margin-top:20px;
+    padding:15px;
+    resize:vertical;
+    border-radius:14px;
+    border:1px solid #30364b;
+    background:#090d18;
+    color:white;
+    outline:none;
+    font-size:14px;
+}
+
+.tool-input:focus{
+    border-color:#6d5dfc;
+}
+
+.tool-buttons{
+    display:flex;
+    gap:10px;
+    margin-top:12px;
+}
+
+/* INPUT */
+
+.input-area{
+    position:fixed;
+    left:250px;
+    right:0;
+    bottom:0;
+    padding:15px 20px 18px;
+    background:linear-gradient(transparent,#070912 30%);
+    z-index:10;
+}
+
+.input-box{
+    max-width:850px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    padding:7px;
+    border:1px solid #30364b;
+    border-radius:17px;
+    background:#101420;
+}
+
+#message{
+    flex:1;
+    min-width:0;
+    height:42px;
+    border:0;
+    outline:0;
+    background:transparent;
+    color:#fff;
+    font-size:14px;
+    padding:0 8px;
+}
+
+#message::placeholder{
+    color:#697287;
+}
+
+.icon-btn{
+    width:42px;
+    height:42px;
+    border:0;
+    border-radius:10px;
+    background:transparent;
+    color:#8992a6;
+}
+
+.send{
+    width:44px;
+    height:44px;
+    border:0;
+    border-radius:12px;
+    background:linear-gradient(135deg,#6d5dfc,#a855f7);
+    color:white;
+    font-size:18px;
+}
+
+.note{
+    text-align:center;
+    color:#4e566a;
+    font-size:9px;
+    margin-top:6px;
+}
+
+/* MOBILE */
+
+@media(max-width:850px){
+
+    .sidebar{
+        display:none;
+    }
+
+    .input-area{
+        left:0;
+    }
+
+    .cards,
+    .tools-grid{
+        grid-template-columns:1fr;
+    }
+
+    .stats{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .tools-top{
+        flex-direction:column;
+        gap:15px;
+    }
+}
+
+@media(max-width:550px){
+
+    .content{
+        padding:18px 13px 125px;
+    }
+
+    .hero{
+        padding:24px;
+    }
+
+    .hero h1{
+        font-size:31px;
+    }
+
+    .status{
+        display:none;
+    }
+
+    .header{
+        padding:0 14px;
+    }
+
+    .tool-workspace-box{
+        padding:20px;
+    }
+}
+/* =========================
+   GURUAI THEMES
+========================= */
+
+/* LIGHT THEME */
+
+body.theme-light{
+    background:#f5f7fb;
+    color:#171a24;
+}
+
+body.theme-light .sidebar{
+    background:#ffffff;
+    border-right-color:#dfe3ec;
+}
+
+body.theme-light .main{
+    background:#f5f7fb;
+}
+
+body.theme-light .header{
+    background:#ffffff;
+    border-bottom-color:#dfe3ec;
+}
+
+body.theme-light .new-chat,
+body.theme-light .header-btn,
+body.theme-light .secondary{
+    background:#eef1f7;
+    color:#171a24;
+    border-color:#d8ddea;
+}
+
+body.theme-light .menu{
+    color:#626b7d;
+}
+
+body.theme-light .menu:hover,
+body.theme-light .new-chat:hover{
+    background:#eef1f7;
+    color:#171a24;
+}
+
+body.theme-light .hero{
+    background:
+        radial-gradient(circle at 85% 20%,#6d5dfc18,transparent 35%),
+        linear-gradient(145deg,#ffffff,#f1f3f9);
+    border-color:#dfe3ec;
+}
+
+body.theme-light .stat,
+body.theme-light .card,
+body.theme-light .tool,
+body.theme-light .settings-box,
+body.theme-light .tool-workspace-box,
+body.theme-light .input-box{
+    background:#ffffff;
+    border-color:#dfe3ec;
+}
+
+body.theme-light #message{
+    color:#171a24;
+}
+
+body.theme-light #message::placeholder{
+    color:#7c8495;
+}
+
+body.theme-light .user-card{
+    background:#f5f7fb;
+    border-color:#dfe3ec;
+}
+
+
+/* PURPLE THEME */
+
+body.theme-purple{
+    background:#0d0815;
+}
+
+body.theme-purple .sidebar{
+    background:#120b1d;
+}
+
+body.theme-purple .main{
+    background:#0d0815;
+}
+
+body.theme-purple .header{
+    background:#100a19;
+}
+
+body.theme-purple .hero{
+    background:
+        radial-gradient(circle at 85% 20%,#a855f740,transparent 35%),
+        linear-gradient(145deg,#1a1027,#100b19);
+}
+
+body.theme-purple .stat,
+body.theme-purple .card,
+body.theme-purple .tool,
+body.theme-purple .settings-box,
+body.theme-purple .tool-workspace-box,
+body.theme-purple .input-box{
+    background:#150d20;
+    border-color:#3d2852;
+}
+
+
+/* BLUE THEME */
+
+body.theme-blue{
+    background:#06101b;
+}
+
+body.theme-blue .sidebar{
+    background:#081521;
+}
+
+body.theme-blue .main{
+    background:#06101b;
+}
+
+body.theme-blue .header{
+    background:#07131f;
+}
+
+body.theme-blue .hero{
+    background:
+        radial-gradient(circle at 85% 20%,#2584ff35,transparent 35%),
+        linear-gradient(145deg,#0d1d2d,#07121d);
+}
+
+body.theme-blue .stat,
+body.theme-blue .card,
+body.theme-blue .tool,
+body.theme-blue .settings-box,
+body.theme-blue .tool-workspace-box,
+body.theme-blue .input-box{
+    background:#0b1927;
+    border-color:#1d3b58;
+}
+
+
+/* GREEN THEME */
+
+body.theme-green{
+    background:#06120d;
+}
+
+body.theme-green .sidebar{
+    background:#081810;
+}
+
+body.theme-green .main{
+    background:#06120d;
+}
+
+body.theme-green .header{
+    background:#07150e;
+}
+
+body.theme-green .hero{
+    background:
+        radial-gradient(circle at 85% 20%,#22c55e35,transparent 35%),
+        linear-gradient(145deg,#0d2116,#07130d);
+}
+
+body.theme-green .stat,
+body.theme-green .card,
+body.theme-green .tool,
+body.theme-green .settings-box,
+body.theme-green .tool-workspace-box,
+body.theme-green .input-box{
+    background:#0b1b12;
+    border-color:#1d4730;
+}
+
+
+/* THEME TRANSITION */
+
+body,
+.sidebar,
+.main,
+.header,
+.hero,
+.stat,
+.card,
+.tool,
+.settings-box,
+.tool-workspace-box,
+.input-box{
+    transition:
+        background .25s ease,
+        border-color .25s ease,
+        color .25s ease;
+}
+</style>
+</head>
+
+ton>
+
+<button class="menu" onclick="showSettings()">⚙ Settings</button>
+
+<div class="section-title">RECENT CHATS</div>
+
+<div class="history" id="history"></div>
+
+<div class="user-card">
+
+<div class="user-name" id="userName">GURUAI User</div>
+
+<div class="user-email" id="userEmail">Not logged in</div>
+
+<button class="logout" onclick="logout()">🚪 Logout</button>
+
+</div>
+
+</aside>
+
+
+<!-- MAIN --><body>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+<div class="logo-area">
+    <div class="logo">G</div>
+    <div class="logo-text">GURUAI</div>
+</div>
+
+<button class="new-chat" onclick="newChat()">＋ New Chat</button>
+
+<div class="section-title">WORKSPACE</div>
+
+<button class="menu" onclick="showDashboard()">⌂ Dashboard</button>
+
+<button class="menu" onclick="showTools()">✨ AI Tools</button>
+
+<button class="menu" onclick="studyMode()">📚 Study Mode</but
+
+<main class="main">
+
+<header class="header">
+
+<div>
+<div class="header-title">GURUAI</div>
+<div class="header-subtitle">Your intelligent AI workspace</div>
+</div>
+
+<div class="header-right">
+
+<div class="status">● AI Online</div>
+
+<button class="header-btn" onclick="showSettings()">⚙</button>
+
+</div>
+
+</header>
+
+
+<div class="content">
+
+<!-- DASHBOARD -->
+
+<section id="dashboard">
+
+<div class="hero">
+
+<div class="hero-small">WELCOME BACK</div>
+
+<h1>
+Hello,
+<span class="gradient" id="heroName">User</span>
+</h1>
+
+<p>
+Your GURUAI Cloud AI workspace is ready.
+Ask questions, study, write, code and explore your ideas.
+</p>
+
+<div class="hero-buttons">
+
+<button class="primary" onclick="focusInput()">
+✦ Start Chatting
+</button>
+
+<button class="secondary" onclick="showTools()">
+✨ AI Tools
+</button>
+
+</div>
+
+</div>
+
+
+<div class="stats">
+
+<div class="stat">
+<div class="stat-icon">☁️</div>
+<div class="stat-number">Cloud AI</div>
+<div class="stat-label">Gemini Engine</div>
+</div>
+
+<div class="stat">
+<div class="stat-icon">🧠</div>
+<div class="stat-number">Smart</div>
+<div class="stat-label">AI Assistant</div>
+</div>
+
+<div class="stat">
+<div class="stat-icon">💬</div>
+<div class="stat-number" id="chatCount">0</div>
+<div class="stat-label">Saved Chats</div>
+</div>
+
+<div class="stat">
+<div class="stat-icon">⚡</div>
+<div class="stat-number">Ready</div>
+<div class="stat-label">System Status</div>
+</div>
+
+</div>
+
+
+<div class="section-heading">
+<h2>AI Workspace</h2>
+<span>Choose an assistant</span>
+</div>
+
+
+<div class="cards">
+
+<div class="card" onclick="openTool('Study Assistant','Tell me your class, subject and topic. I will help you learn it step by step.')">
+<div class="card-icon">📚</div>
+<div class="card-title">Study Assistant</div>
+<div class="card-text">Learn difficult subjects with simple explanations.</div>
+</div>
+
+<div class="card" onclick="openTool('Writing Assistant','Tell me what you want to write and I will help you create it.')">
+<div class="card-icon">✍️</div>
+<div class="card-title">Writing Assistant</div>
+<div class="card-text">Create letters, essays, messages and useful content.</div>
+</div>
+
+<div class="card" onclick="openTool('Coding Assistant','Paste your code or explain your programming problem.')">
+<div class="card-icon">💻</div>
+<div class="card-title">Coding Assistant</div>
+<div class="card-text">Understand programming concepts and code.</div>
+</div>
+
+<div class="card" onclick="openTool('Idea Generator','Tell me what you need ideas for.')">
+<div class="card-icon">💡</div>
+<div class="card-title">Idea Generator</div>
+<div class="card-text">Turn your ideas into useful project concepts.</div>
+</div>
+
+<div class="card" onclick="openTool('Explain Anything','Tell me the topic you want explained in simple language.')">
+<div class="card-icon">🧠</div>
+<div class="card-title">Explain Anything</div>
+<div class="card-text">Get clear explanations for difficult questions.</div>
+</div>
+
+<div class="card" onclick="showTools()">
+<div class="card-icon">✨</div>
+<div class="card-title">All AI Tools</div>
+<div class="card-text">Explore the GURUAI tool collection.</div>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- CHAT -->
+
+<section id="chat" class="chat"></section>
+
+
+<!-- ADVANCED AI TOOLS -->
+
+<section id="tools" class="tools">
+
+    <div class="tools-header">
+        <div>
+            <div class="tools-label">GURUAI WORKSPACE</div>
+            <h1>✨ AI Tools</h1>
+            <p>Choose a specialized AI assistant for your task.</p>
+        </div>
+
+        <button class="secondary" onclick="showDashboard()">
+            ← Dashboard
+        </button>
+    </div>
+
+    <div class="tools-grid">
+
+        <div class="tool" onclick="openAITool(
+            '📚 Study Assistant',
+            'Help me study a topic step by step. Ask me my class, subject and topic first.'
+        )">
+            <div class="tool-icon">📚</div>
+            <div class="tool-title">Study Assistant</div>
+            <div class="tool-description">
+                Learn subjects with simple explanations and step-by-step guidance.
+            </div>
+            <div class="tool-action">Open →</div>
+        </div>
+
+        <div class="tool" onclick="openAITool(
+            '✍️ Writing Assistant',
+            'Act as a professional writing assistant. Help me create, improve or rewrite my content.'
+        )">
+            <div class="tool-icon">✍️</div>
+            <div class="tool-title">Writing Assistant</div>
+            <div class="tool-description">
+                Write essays, letters, messages, applications and more.
+            </div>
+            <div class="tool-action">Open →</div>
+        </div>
+
+        <div class="tool" onclick="openAITool(
+            '💻 Coding Assistant',
+            'Act as an expert programming assistant. Help me understand and write code.'
+        )">
+            <div class="tool-icon">💻</div>
+            <div class="tool-title">Coding Assistant</div>
+            <div class="tool-description">
+                Build, understand, debug and improve your code.
+            </div>
+            <div class="tool-action">Open →</div>
+        </div>
+
+        <div class="tool" onclick="openAITool(
+            '💡 Idea Generator',
+            'Help me generate creative and practical ideas for my project.'
+        )">
+            <div class="tool-icon">💡</div>
+            <div class="tool-title">Idea Generator</div>
+            <div class="tool-description">
+                Generate project, business and creative ideas.
+            </div>
+            <div class="tool-action">Open →</div>
+        </div>
+
+        <div class="tool" onclick="openAITool(
+            '🧠 Explain Anything',
+            'Explain any topic in simple language with examples.'
+        )">
+            <div class="tool-icon">🧠</div>
+            <div class="tool-title">Explain Anything</div>
+            <div class="tool-description">
+                Turn difficult concepts into easy-to-understand explanations.
+            </div>
+            <div class="tool-action">Open →</div>
+        </div>
+
+        <div class="tool" onclick="openAITool(
+            '📄 Summarizer',
+            'Summarize the information I provide into clear and useful points.'
+        )">
+            <div class="tool-icon">📄</div>
+            <div class="tool-title">Summarizer</div>
+            <div class="tool-description">
+                Convert long information into concise points.
+            </div>
+            <div class="tool-action">Open →</div>
+        </div>
+
+        <div class="tool" onclick="openAITool(
+            '🌐 Translator',
+            'Translate the text I provide and explain the translation when useful.'
+        )">
+            <div class="tool-icon">🌐</div>
+            <div class="tool-title">Translator</div>
+            <div class="tool-description">
+                Translate text between different languages.
+            </div>
+            <div class="tool-action">Open →</div>
+        </div>
+
+        <div class="tool" onclick="openAITool(
+            '🎓 Homework Helper',
+            'Help me solve my school question step by step and explain the answer.'
+        )">
+            <div class="tool-icon">🎓</div>
+            <div class="tool-title">Homework Helper</div>
+            <div class="tool-description">
+                Get explanations and learning help for schoolwork.
+            </div>
+            <div class="tool-action">Open →</div>
+        </div>
+
+        <div class="tool" onclick="openAITool(
+            '🚀 Project Assistant',
+            'Help me plan and build my project step by step.'
+        )">
+            <div class="tool-icon">🚀</div>
+            <div class="tool-title">Project Assistant</div>
+            <div class="tool-description">
+                Plan features, tasks and development steps for your projects.
+            </div>
+            <div class="tool-action">Open →</div>
+        </div>
+
+    </div>
+
+</section>
+
+<section id="tools" class="tools">
+
+<div class="tools-top">
+
+<div>
+<div class="hero-small">GURUAI WORKSPACE</div>
+<h1>✨ AI Tools</h1>
+<p>Choose a specialized AI assistant and start working.</p>
+</div>
+
+<button class="secondary" onclick="showDashboard()">
+← Dashboard
+</button>
+
+</div>
+
+
+<div class="tools-grid">
+
+<div class="tool" onclick="openTool('Writing Assistant','Help me write or improve something. What would you like to write?')">
+<div class="tool-icon">✍️</div>
+<div class="tool-title">Writing Assistant</div>
+<div class="tool-description">Write essays, letters, messages and applications.</div>
+<div class="tool-action">Open tool →</div>
+</div>
+
+<div class="tool" onclick="openTool('Summarizer','Paste the text you want me to summarize.')">
+<div class="tool-icon">📄</div>
+<div class="tool-title">Summarizer</div>
+<div class="tool-description">Turn long information into short clear points.</div>
+<div class="tool-action">Open tool →</div>
+</div>
+
+<div class="tool" onclick="openTool('Idea Generator','Tell me what project or creative idea you need.')">
+<div class="tool-icon">💡</div>
+<div class="tool-title">Idea Generator</div>
+<div class="tool-description">Generate creative ideas and possibilities.</div>
+<div class="tool-action">Open tool →</div>
+</div>
+
+<div class="tool" onclick="openTool('Code Assistant','Paste your code or describe your programming problem.')">
+<div class="tool-icon">💻</div>
+<div class="tool-title">Code Assistant</div>
+<div class="tool-description">Understand, debug and improve your code.</div>
+<div class="tool-action">Open tool →</div>
+</div>
+
+<div class="tool" onclick="openTool('Translator','Tell me the text and language you want.')">
+<div class="tool-icon">🌐</div>
+<div class="tool-title">Translator</div>
+<div class="tool-description">Translate text between different languages.</div>
+<div class="tool-action">Open tool →</div>
+</div>
+
+<div class="tool" onclick="openTool('Homework Helper','Tell me your class, subject and question.')">
+<div class="tool-icon">🎓</div>
+<div class="tool-title">Homework Helper</div>
+<div class="tool-description">Get step-by-step learning assistance.</div>
+<div class="tool-action">Open tool →</div>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- TOOL WORKSPACE -->
+
+<section id="toolWorkspace" class="tool-workspace">
+
+<div class="tool-workspace-box">
+
+<div class="hero-small">GURUAI AI TOOL</div>
+
+<h1 id="toolTitle">AI Tool</h1>
+
+<p id="toolPrompt">
+Tell GURUAI what you need.
+</p>
+
+<textarea
+id="toolInput"
+class="tool-input"
+placeholder="Type your request here..."
+></textarea>
+
+<div class="tool-buttons">
+
+<button class="primary" onclick="runTool()">
+✨ Run AI
+</button>
+
+<button class="secondary" onclick="showTools()">
+← Back to Tools
+</button>
+
+</div>
+
+<div id="toolResult"></div>
+
+</div>
+
+</section>
+
+
+<!-- SETTINGS -->
+
+<section id="settings" class="settings">
+
+<h1>⚙ Settings</h1>
+<div class="settings-box">
+    <div class="setting-name">🎨 Appearance</div>
+
+    <div class="setting-info">
+        Choose how GURUAI looks.
+    </div>
+
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:15px;">
+
+        <button class="secondary" onclick="setTheme('dark')">
+            🌑 Dark
+        </button>
+
+        <button class="secondary" onclick="setTheme('light')">
+            ☀️ Light
+        </button>
+
+        <button class="secondary" onclick="setTheme('purple')">
+            🟣 Purple
+        </button>
+
+        <button class="secondary" onclick="setTheme('blue')">
+            🔵 Blue
+        </button>
+
+        <button class="secondary" onclick="setTheme('green')">
+            🟢 Green
+        </button>
+
+    </div>
+</div>
+
+<p style="color:#737c91;font-size:12px;">
+Your GURUAI account and workspace.
+</p>
+
+<div class="settings-box">
+<div class="setting-name">👤 Account</div>
+<div class="setting-info" id="settingsUser">GURUAI User</div>
+</div>
+
+<div class="settings-box">
+<div class="setting-name">☁️ AI Provider</div>
+<div class="setting-info">Gemini Cloud AI</div>
+</div>
+
+<div class="settings-box">
+<div class="setting-name">📷 GURU Lens</div>
+<div class="setting-info">Lens development is planned for a later upgrade.</div>
+</div>
+
+<div class="settings-box">
+<div class="setting-name">🔐 Login Status</div>
+<div class="setting-info">You are currently signed in on this browser.</div>
+</div>
+
+<br>
+
+<button class="primary" onclick="logout()">
+🚪 Logout
+</button>
+
+</section>
+
+</div>
+
+</main>
+
+</div>
+
+
+<!-- INPUT -->
+
+<div class="input-area">
+
+<div class="input-box">
+
+<button class="icon-btn" onclick="startVoice()">🎤</button>
+
+<input
+id="message"
+type="text"
+placeholder="Ask GURUAI anything..."
+autocomplete="off"
+>
+
+<button class="send" onclick="sendMessage()">➤</button>
+
+</div>
+
+<div class="note">
+GURUAI Cloud AI • Gemini
+</div>
+
+</div>
+
+
+<script>
+    /* =========================
+   GURUAI THEME SYSTEM
+========================= */
+
+function setTheme(theme){
+
+    document.body.classList.remove(
+        "theme-light",
+        "theme-purple",
+        "theme-blue",
+        "theme-green"
+    );
+
+    if(theme !== "dark"){
+        document.body.classList.add("theme-" + theme);
+    }
+
+    localStorage.setItem("guruai_theme", theme);
+}
+
+
+/* Load saved theme */
+
+const savedTheme =
+    localStorage.getItem("guruai_theme") || "dark";
+
+setTheme(savedTheme);
+
+/* LOGIN */
+
+const currentUser =
+JSON.parse(
+localStorage.getItem("guruai_current_user") || "null"
+);
+
+if(!currentUser){
+    window.location.href="auth.html";
+}
+
+
+/* USER */
+
+if(currentUser){
+
+const name=currentUser.name || "User";
+const email=currentUser.email || "";
+
+document.getElementById("userName").textContent=name;
+document.getElementById("userEmail").textContent=email;
+document.getElementById("heroName").textContent=name;
+
+document.getElementById("settingsUser").textContent=
+name+" • "+email;
+
+}
+
+
+/* LOGOUT */
+
+function logout(){
+
+localStorage.removeItem("guruai_current_user");
+
+window.location.href="auth.html";
+
+}
+
+
+/* HISTORY */
+
+let conversations=
+JSON.parse(
+localStorage.getItem("guruai_history") || "[]"
+);
+
+let currentConversation=null;
+
+
+function saveHistory(){
+
+localStorage.setItem(
+"guruai_history",
+JSON.stringify(conversations)
+);
+
+renderHistory();
+
+}
+
+
+function renderHistory(){
+
+const history=document.getElementById("history");
+
+history.innerHTML="";
+
+conversations.slice(0,20).forEach((item,index)=>{
+
+const row=document.createElement("div");
+
+row.className="history-item";
+
+row.textContent="💬 "+item.title;
+
+row.onclick=()=>{
+loadConversation(index);
+};
+
+history.appendChild(row);
+
+});
+
+document.getElementById("chatCount").textContent=
+conversations.length;
+
+}
+
+
+/* PAGE SYSTEM */
+
+function hidePages(){
+
+document.getElementById("dashboard").style.display="none";
+document.getElementById("chat").style.display="none";
+document.getElementById("tools").style.display="none";
+document.getElementById("settings").style.display="none";
+document.getElementById("toolWorkspace").style.display="none";
+
+}
+
+
+function showDashboard(){
+
+hidePages();
+
+document.getElementById("dashboard").style.display="block";
+
+}
+
+
+function showTools(){
+
+hidePages();
+
+document.getElementById("tools").style.display="block";
+
+}
+
+
+function showSettings(){
+
+hidePages();
+
+document.getElementById("settings").style.display="block";
+
+}
+
+
+/* NEW CHAT */
+
+function newChat(){
+
+currentConversation=null;
+
+document.getElementById("chat").innerHTML="";
+
+showDashboard();
+
+focusInput();
+
+}
+
+
+/* INPUT */
+
+function focusInput(){
+
+document.getElementById("message").focus();
+
+}
+
+
+/* AI TOOLS */
+
+let selectedTool="";
+
+
+function openTool(name,prompt){
+
+selectedTool=name;
+
+hidePages();
+
+const workspace=
+document.getElementById("toolWorkspace");
+
+workspace.style.display="block";
+
+document.getElementById("toolTitle").textContent=name;
+
+document.getElementById("toolPrompt").textContent=prompt;
+
+document.getElementById("toolInput").value="";
+
+document.getElementById("toolResult").innerHTML="";
+
+document.getElementById("toolInput").focus();
+
+}
+
+
+async function runTool(){
+
+const input=
+document.getElementById("toolInput");
+
+const text=input.value.trim();
+
+if(!text){
+
+alert("Please enter something first.");
+
+return;
+
+}
+
+const result=
+document.getElementById("toolResult");
+
+result.innerHTML=`
+<div class="message" style="margin-top:25px;">
+<div class="avatar ai-avatar">G</div>
+<div>
+<div class="message-name">GURUAI • ${escapeHTML(selectedTool)}</div>
+<div class="ai-text">Thinking...</div>
+</div>
+</div>
+`;
+
+try{
+
+const response=
+await fetch(
+"http://localhost:3000/chat",
+{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+message:
+`You are GURUAI's ${selectedTool}.
+Help the user with the following request:
+
+${text}`
+})
+}
+);
+
+if(!response.ok){
+
+throw new Error("Server error");
+
+}
+
+const data=await response.json();
+
+const reply=
+data.reply || "No response received.";
+
+result.innerHTML=`
+<div class="message" style="margin-top:25px;">
+<div class="avatar ai-avatar">G</div>
+<div>
+<div class="message-name">
+GURUAI • ${escapeHTML(selectedTool)}
+</div>
+<div class="ai-text">${escapeHTML(reply)}</div>
+</div>
+</div>
+`;
+
+}
+catch(error){
+
+console.error(error);
+
+result.innerHTML=`
+<div class="message">
+<div class="avatar ai-avatar">!</div>
+<div>
+<div class="message-name">GURUAI</div>
+<div class="ai-text">
+⚠️ Could not connect to GURUAI.
+Make sure server.js is running.
+</div>
+</div>
+</div>
+`;
+
+}
+
+}
+
+
+/* QUICK ASK */
+
+function quickAsk(text){
+
+hidePages();
+
+document.getElementById("chat").style.display="block";
+
+document.getElementById("message").value=text;
+
+focusInput();
+
+}
+
+
+/* SEND MESSAGE */
+
+async function sendMessage(){
+
+const input=
+document.getElementById("message");
+
+const text=
+input.value.trim();
+
+if(!text)return;
+
+hidePages();
+
+document.getElementById("chat").style.display="block";
+
+
+if(!currentConversation){
+
+currentConversation={
+title:text.substring(0,40),
+messages:[]
+};
+
+conversations.unshift(currentConversation);
+
+}
+
+
+currentConversation.messages.push({
+role:"user",
+text:text
+});
+
+addMessage("user",text);
+
+input.value="";
+
+
+const thinking=
+document.createElement("div");
+
+thinking.className="message";
+
+thinking.innerHTML=`
+
+<div class="avatar ai-avatar">
+G
+</div>
+
+<div>
+
+<div class="message-name">
+GURUAI
+</div>
+
+<div class="ai-text">
+Thinking...
+</div>
+
+</div>
+
+`;
+
+document.getElementById("chat").appendChild(thinking);
+
+scrollBottom();
+
+
+try{
+
+const response=
+await fetch(
+"http://localhost:3000/chat",
+{
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+message:text
+})
+
+}
+);
+
+
+if(!response.ok){
+
+throw new Error(
+"Server returned "+response.status
+);
+
+}
+
+
+const data=
+await response.json();
+
+const reply=
+data.reply || "No response received.";
+
+
+thinking.querySelector(".ai-text").textContent=
+reply;
+
+
+currentConversation.messages.push({
+role:"ai",
+text:reply
+});
+
+saveHistory();
+
+}
+catch(error){
+
+console.error(error);
+
+thinking.querySelector(".ai-text").textContent=
+"⚠️ Could not connect to GURUAI. Make sure server.js is running.";
+
+}
+
+scrollBottom();
+
+}
+
+
+/* ADD MESSAGE */
+
+function addMessage(role,text){
+
+const chat=
+document.getElementById("chat");
+
+const box=
+document.createElement("div");
+
+box.className="message";
+
+
+if(role==="user"){
+
+box.innerHTML=`
+
+<div class="avatar user-avatar">
+YOU
+</div>
+
+<div>
+
+<div class="message-name">
+You
+</div>
+
+<div class="user-text">
+${escapeHTML(text)}
+</div>
+
+</div>
+
+`;
+
+}
+else{
+
+box.innerHTML=`
+
+<div class="avatar ai-avatar">
+G
+</div>
+
+<div>
+
+<div class="message-name">
+GURUAI
+</div>
+
+<div class="ai-text">
+${escapeHTML(text)}
+</div>
+
+</div>
+
+`;
+
+}
+
+chat.appendChild(box);
+
+}
+
+
+/* LOAD CHAT */
+
+function loadConversation(index){
+
+const item=conversations[index];
+
+if(!item)return;
+
+currentConversation=item;
+
+hidePages();
+
+document.getElementById("chat").style.display="block";
+
+const chat=
+document.getElementById("chat");
+
+chat.innerHTML="";
+
+item.messages.forEach(message=>{
+
+addMessage(
+message.role,
+message.text
+);
+
+});
+
+scrollBottom();
+
+}
+
+
+/* STUDY MODE */
+
+function studyMode(){
+
+openTool(
+"Study Assistant",
+"Tell me your class, subject and topic."
+);
+
+}
+
+
+/* VOICE */
+
+function startVoice(){
+
+const SpeechRecognition=
+window.SpeechRecognition ||
+window.webkitSpeechRecognition;
+
+if(!SpeechRecognition){
+
+alert(
+"Voice input is not supported in this browser."
+);
+
+return;
+
+}
+
+const recognition=
+new SpeechRecognition();
+
+recognition.lang="en-IN";
+
+recognition.continuous=false;
+
+recognition.interimResults=false;
+
+recognition.onresult=function(event){
+
+document.getElementById("message").value=
+event.results[0][0].transcript;
+
+focusInput();
+
+};
+
+recognition.start();
+
+}
+
+
+/* UTILITIES */
+
+function escapeHTML(text){
+
+const div=document.createElement("div");
+
+div.textContent=text;
+
+return div.innerHTML;
+
+}
+
+
+function scrollBottom(){
+
+setTimeout(()=>{
+
+window.scrollTo({
+top:document.body.scrollHeight,
+behavior:"smooth"
+});
+
+},100);
+
+}
+
+
+/* ENTER */
+
+document.getElementById("message").addEventListener(
+"keydown",
+function(event){
+
+if(event.key==="Enter"){
+
+event.preventDefault();
+
+sendMessage();
+
+}
+
+}
+);
+
+
+/* START */
+
+renderHistory();
+
+</script>
+
+</body>
+</html>
