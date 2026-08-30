@@ -765,29 +765,29 @@ button{
     </div>
 
     <button class="new-chat" onclick="newChat()">
-        ï¼‹ New Chat
+        ＋ New Chat
     </button>
 
     <div class="nav-title">MAIN</div>
 
     <button class="nav-btn active" onclick="showPage('home',this)">
-        ðŸ  Home
+        🏠 Home
     </button>
 
     <button class="nav-btn" onclick="showPage('chat',this)">
-        ðŸ’¬ Chat
+        💬 Chat
     </button>
 
     <button class="nav-btn" onclick="showPage('lens',this)">
-        ðŸ“· GURU Lens
+        📷 GURU Lens
     </button>
 
     <button class="nav-btn" onclick="showPage('tools',this)">
-        âœ¨ AI Tools
+        ✨ AI Tools
     </button>
 
     <button class="nav-btn" onclick="showPage('study',this)">
-        ðŸ“š Study Mode
+        📚 Study Mode
     </button>
 
     <div class="nav-title" style="margin-top:18px;">
@@ -795,15 +795,15 @@ button{
     </div>
 
     <button class="nav-btn" onclick="showPage('history',this)">
-        ðŸ•˜ History
+        🕘 History
     </button>
 
     <button class="nav-btn" onclick="showPage('plans',this)">
-        ðŸ’Ž Plans
+        💎 Plans
     </button>
 
     <button class="nav-btn" onclick="showPage('settings',this)">
-        âš™ Settings
+        ⚙ Settings
     </button>
 
     <div class="sidebar-bottom">
@@ -818,7 +818,7 @@ button{
             </div>
 
             <button class="logout" onclick="logout()">
-                ðŸšª Logout
+                🚪 Logout
             </button>
         </div>
 
@@ -842,7 +842,7 @@ button{
     <div class="top-right">
 
         <div class="search-box">
-            <span>âŒ•</span>
+            <span>⌕</span>
             <input
                 id="searchInput"
                 placeholder="Search GURUAI..."
@@ -851,7 +851,7 @@ button{
         </div>
 
         <div class="online">
-            â— AI Online
+            ● AI Online
         </div>
 
     </div>
@@ -883,11 +883,11 @@ button{
         <div class="hero-actions">
 
             <button class="primary" onclick="showPage('chat')">
-                âœ¦ Start Chatting
+                ✦ Start Chatting
             </button>
 
             <button class="secondary" onclick="showPage('tools')">
-                âœ¨ Explore AI Tools
+                ✨ Explore AI Tools
             </button>
 
         </div>
@@ -902,25 +902,25 @@ button{
     <div class="quick-grid">
 
         <div class="quick-card" onclick="showPage('chat')">
-            <div class="quick-icon">ðŸ’¬</div>
+            <div class="quick-icon">💬</div>
             <h3>AI Chat</h3>
             <p>Ask GURUAI anything.</p>
         </div>
 
         <div class="quick-card" onclick="showPage('lens')">
-            <div class="quick-icon">ðŸ“·</div>
+            <div class="quick-icon">📷</div>
             <h3>GURU Lens</h3>
             <p>Work with images and visual questions.</p>
         </div>
 
         <div class="quick-card" onclick="startVoice()">
-            <div class="quick-icon">ðŸŽ¤</div>
+            <div class="quick-icon">🎤</div>
             <h3>Voice Input</h3>
             <p>Speak your question to GURUAI.</p>
         </div>
 
         <div class="quick-card" onclick="showPage('study')">
-            <div class="quick-icon">ðŸ“š</div>
+            <div class="quick-icon">📚</div>
             <h3>Study Mode</h3>
             <p>Get step-by-step learning help.</p>
         </div>
@@ -936,7 +936,7 @@ button{
     <div class="chat-page">
 
         <h1 class="chat-title">
-            ðŸ’¬ GURUAI Chat
+            💬 GURUAI Chat
         </h1>
 
         <div id="chatMessages" class="chat-messages">
@@ -970,7 +970,7 @@ button{
     <div class="page-heading">
 
         <div>
-            <h1>ðŸ“· GURU Lens</h1>
+            <h1>📷 GURU Lens</h1>
             <p>Use your camera or upload an image for visual AI.</p>
         </div>
 
@@ -979,7 +979,7 @@ button{
     <div class="lens-box">
 
         <div class="lens-icon">
-            ðŸ“·
+            📷
         </div>
 
         <h1>GURU Lens</h1>
@@ -1002,7 +1002,7 @@ button{
             class="primary"
             onclick="document.getElementById('lensFile').click()"
         >
-            ðŸ“· Choose Image
+            📷 Choose Image
         </button>
 
         <div id="lensResult"></div>
@@ -1018,7 +1018,7 @@ button{
     <div class="page-heading">
 
         <div>
-            <h1>âœ¨ AI Tools</h1>
+            <h1>✨ AI Tools</h1>
             <p>Specialized assistants for different tasks.</p>
         </div>
 
@@ -1026,67 +1026,67 @@ button{
 
     <div class="tools-grid">
 
-        <div class="tool-card" onclick="openTool('ðŸ“š Study Assistant')">
-            <div class="tool-icon">ðŸ“š</div>
+        <div class="tool-card" onclick="openTool('📚 Study Assistant')">
+            <div class="tool-icon">📚</div>
             <h3>Study Assistant</h3>
             <p>Learn subjects with simple explanations.</p>
-            <div class="tool-open">Open â†’</div>
+            <div class="tool-open">Open →</div>
         </div>
 
-        <div class="tool-card" onclick="openTool('âœï¸ Writing Assistant')">
-            <div class="tool-icon">âœï¸</div>
+        <div class="tool-card" onclick="openTool('✍️ Writing Assistant')">
+            <div class="tool-icon">✍️</div>
             <h3>Writing Assistant</h3>
             <p>Write essays, letters and useful content.</p>
-            <div class="tool-open">Open â†’</div>
+            <div class="tool-open">Open →</div>
         </div>
 
-        <div class="tool-card" onclick="openTool('ðŸ’» Coding Assistant')">
-            <div class="tool-icon">ðŸ’»</div>
+        <div class="tool-card" onclick="openTool('💻 Coding Assistant')">
+            <div class="tool-icon">💻</div>
             <h3>Coding Assistant</h3>
             <p>Understand, debug and improve code.</p>
-            <div class="tool-open">Open â†’</div>
+            <div class="tool-open">Open →</div>
         </div>
 
-        <div class="tool-card" onclick="openTool('ðŸ’¡ Idea Generator')">
-            <div class="tool-icon">ðŸ’¡</div>
+        <div class="tool-card" onclick="openTool('💡 Idea Generator')">
+            <div class="tool-icon">💡</div>
             <h3>Idea Generator</h3>
             <p>Create project and creative ideas.</p>
-            <div class="tool-open">Open â†’</div>
+            <div class="tool-open">Open →</div>
         </div>
 
-        <div class="tool-card" onclick="openTool('ðŸ§  Explain Anything')">
-            <div class="tool-icon">ðŸ§ </div>
+        <div class="tool-card" onclick="openTool('🧠 Explain Anything')">
+            <div class="tool-icon">🧠</div>
             <h3>Explain Anything</h3>
             <p>Make difficult topics simple.</p>
-            <div class="tool-open">Open â†’</div>
+            <div class="tool-open">Open →</div>
         </div>
 
-        <div class="tool-card" onclick="openTool('ðŸ“„ Summarizer')">
-            <div class="tool-icon">ðŸ“„</div>
+        <div class="tool-card" onclick="openTool('📄 Summarizer')">
+            <div class="tool-icon">📄</div>
             <h3>Summarizer</h3>
             <p>Turn long information into useful points.</p>
-            <div class="tool-open">Open â†’</div>
+            <div class="tool-open">Open →</div>
         </div>
 
-        <div class="tool-card" onclick="openTool('ðŸŒ Translator')">
-            <div class="tool-icon">ðŸŒ</div>
+        <div class="tool-card" onclick="openTool('🌐 Translator')">
+            <div class="tool-icon">🌐</div>
             <h3>Translator</h3>
             <p>Translate between different languages.</p>
-            <div class="tool-open">Open â†’</div>
+            <div class="tool-open">Open →</div>
         </div>
 
-        <div class="tool-card" onclick="openTool('ðŸŽ“ Homework Helper')">
-            <div class="tool-icon">ðŸŽ“</div>
+        <div class="tool-card" onclick="openTool('🎓 Homework Helper')">
+            <div class="tool-icon">🎓</div>
             <h3>Homework Helper</h3>
             <p>Get step-by-step learning assistance.</p>
-            <div class="tool-open">Open â†’</div>
+            <div class="tool-open">Open →</div>
         </div>
 
-        <div class="tool-card" onclick="openTool('ðŸš€ Project Assistant')">
-            <div class="tool-icon">ðŸš€</div>
+        <div class="tool-card" onclick="openTool('🚀 Project Assistant')">
+            <div class="tool-icon">🚀</div>
             <h3>Project Assistant</h3>
             <p>Plan and build your projects.</p>
-            <div class="tool-open">Open â†’</div>
+            <div class="tool-open">Open →</div>
         </div>
 
     </div>
@@ -1100,7 +1100,7 @@ button{
     <div class="page-heading">
 
         <div>
-            <h1>ðŸ“š Study Mode</h1>
+            <h1>📚 Study Mode</h1>
             <p>Your personal AI learning assistant.</p>
         </div>
 
@@ -1109,7 +1109,7 @@ button{
     <div class="lens-box">
 
         <div class="lens-icon">
-            ðŸ“š
+            📚
         </div>
 
         <h1>Start Learning</h1>
@@ -1122,7 +1122,7 @@ button{
 
         <button class="primary"
                 onclick="sendPreset('Help me study a topic step by step. Ask me my class, subject and topic first.')">
-            ðŸ“š Start Study Session
+            📚 Start Study Session
         </button>
 
     </div>
@@ -1136,7 +1136,7 @@ button{
     <div class="page-heading">
 
         <div>
-            <h1>ðŸ•˜ History</h1>
+            <h1>🕘 History</h1>
             <p>Your saved GURUAI conversations.</p>
         </div>
 
@@ -1153,7 +1153,7 @@ button{
     <div class="page-heading">
 
         <div>
-            <h1>ðŸ’Ž GURUAI Plans</h1>
+            <h1>💎 GURUAI Plans</h1>
             <p>Choose the plan that fits your needs.</p>
         </div>
 
@@ -1170,16 +1170,16 @@ button{
             <h2>GURUAI Free</h2>
 
             <div class="price">
-                â‚¹0
+                ₹0
                 <span>/ forever</span>
             </div>
 
             <ul>
-                <li>âœ“ AI Chat</li>
-                <li>âœ“ Basic AI Tools</li>
-                <li>âœ“ Study Assistant</li>
-                <li>âœ“ Voice Input</li>
-                <li>âœ“ Basic GURU Lens</li>
+                <li>✓ AI Chat</li>
+                <li>✓ Basic AI Tools</li>
+                <li>✓ Study Assistant</li>
+                <li>✓ Voice Input</li>
+                <li>✓ Basic GURU Lens</li>
             </ul>
 
             <button class="secondary">
@@ -1197,16 +1197,16 @@ button{
             <h2>GURUAI Plus</h2>
 
             <div class="price">
-                â‚¹299
+                ₹299
                 <span>/ month</span>
             </div>
 
             <ul>
-                <li>âœ“ Everything in Free</li>
-                <li>âœ“ Higher AI usage</li>
-                <li>âœ“ Advanced AI Tools</li>
-                <li>âœ“ Faster responses</li>
-                <li>âœ“ More Lens usage</li>
+                <li>✓ Everything in Free</li>
+                <li>✓ Higher AI usage</li>
+                <li>✓ Advanced AI Tools</li>
+                <li>✓ Faster responses</li>
+                <li>✓ More Lens usage</li>
             </ul>
 
             <button class="primary">
@@ -1224,16 +1224,16 @@ button{
             <h2>GURUAI Pro</h2>
 
             <div class="price">
-                â‚¹799
+                ₹799
                 <span>/ month</span>
             </div>
 
             <ul>
-                <li>âœ“ Everything in Plus</li>
-                <li>âœ“ Higher limits</li>
-                <li>âœ“ Advanced features</li>
-                <li>âœ“ Priority AI</li>
-                <li>âœ“ Future Pro features</li>
+                <li>✓ Everything in Plus</li>
+                <li>✓ Higher limits</li>
+                <li>✓ Advanced features</li>
+                <li>✓ Priority AI</li>
+                <li>✓ Future Pro features</li>
             </ul>
 
             <button class="secondary">
@@ -1253,7 +1253,7 @@ button{
     <div class="page-heading">
 
         <div>
-            <h1>âš™ Settings</h1>
+            <h1>⚙ Settings</h1>
             <p>Manage your GURUAI workspace.</p>
         </div>
 
@@ -1261,7 +1261,7 @@ button{
 
     <div class="settings-box">
 
-        <h3>ðŸ‘¤ Account</h3>
+        <h3>👤 Account</h3>
 
         <p id="settingsUser">
             GURUAI User
@@ -1271,7 +1271,7 @@ button{
 
     <div class="settings-box">
 
-        <h3>ðŸŽ¨ Appearance</h3>
+        <h3>🎨 Appearance</h3>
 
         <p>
             GURUAI Dark Mode
@@ -1281,7 +1281,7 @@ button{
 
     <div class="settings-box">
 
-        <h3>â˜ï¸ AI Provider</h3>
+        <h3>☁️ AI Provider</h3>
 
         <p>
             Gemini Cloud AI
@@ -1291,7 +1291,7 @@ button{
 
     <div class="settings-box">
 
-        <h3>ðŸ“· GURU Lens</h3>
+        <h3>📷 GURU Lens</h3>
 
         <p>
             Image AI features are being developed.
@@ -1315,14 +1315,14 @@ button{
             class="chat-icon"
             title="GURU Lens"
             onclick="showPage('lens')">
-            ðŸ“·
+            📷
         </button>
 
         <button
             class="chat-icon"
             title="Voice"
             onclick="startVoice()">
-            ðŸŽ¤
+            🎤
         </button>
 
         <input
@@ -1335,13 +1335,13 @@ button{
         <button
             class="send"
             onclick="sendMessage()">
-            âž¤
+            ➤
         </button>
 
     </div>
 
     <div class="input-note">
-        GURUAI Cloud AI â€¢ Gemini
+        GURUAI Cloud AI • Gemini
     </div>
 
 </div>
@@ -1370,7 +1370,7 @@ if(currentUser){
     email;
 
     document.getElementById("settingsUser").textContent =
-    name + " â€¢ " + email;
+    name + " • " + email;
 }
 
 
@@ -1683,7 +1683,7 @@ function lensSelected(){
     document.getElementById(
         "lensResult"
     ).innerHTML =
-    "ðŸ“· Image selected: " +
+    "📷 Image selected: " +
     file.name +
     "<br><br>" +
     "GURU Lens connection will be added in the next upgrade.";
