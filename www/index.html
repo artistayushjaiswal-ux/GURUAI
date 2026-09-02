@@ -746,6 +746,159 @@ button{
     }
 }
 </style>
+
+<style>
+/* ================= GURUAI RESPONSIVE UI v1 ================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+img,
+video,
+canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+button,
+input,
+textarea,
+select {
+    max-width: 100%;
+}
+
+.page {
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.lens-box {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+@media (max-width: 768px) {
+
+    body {
+        font-size: 15px;
+    }
+
+    .page {
+        width: 100%;
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    h1 {
+        font-size: 28px;
+        line-height: 1.2;
+    }
+
+    h2 {
+        font-size: 23px;
+    }
+
+    h3 {
+        font-size: 19px;
+    }
+
+    input,
+    textarea,
+    select {
+        width: 100% !important;
+        font-size: 16px !important;
+    }
+
+    button {
+        min-height: 44px;
+        font-size: 15px;
+    }
+
+    .lens-box {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        padding: 14px !important;
+    }
+
+    #guruaiToolsPanel,
+    #guruaiStudyPanel,
+    #guruaiLensPanel {
+        width: 100%;
+    }
+
+    #chatMessages {
+        max-height: none;
+    }
+
+    .chat-input,
+    .chat-input-area,
+    .chat-controls {
+        width: 100%;
+    }
+
+    .history-item {
+        width: 100%;
+        overflow-wrap: anywhere;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .page {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 21px;
+    }
+
+    .lens-box {
+        padding: 12px !important;
+        border-radius: 14px !important;
+    }
+
+    button {
+        width: 100%;
+        margin-top: 6px;
+    }
+
+    #guruaiToolRunBtn,
+    #guruaiBuildStudyBtn,
+    #guruaiLensAnalyzeBtn,
+    #guruaiLensRemoveBtn {
+        width: 100%;
+    }
+}
+
+/* Prevent long text from breaking the mobile layout */
+p,
+div,
+span,
+li {
+    overflow-wrap: anywhere;
+}
+</style>
 </head>
 
 <body>
@@ -1421,105 +1574,522 @@ function showPage(page,button){
 }
 
 
-/* ================= NEW CHAT ================= */
+/* ================= CHAT HISTORY ================= */
 
-function newChat(){
+let currentChatId = null;
 
-    document.getElementById(
-        "chatMessages"
-    ).innerHTML = "";
+function getChatHistory() {
+    try {
+        return JSON.parse(
+            localStorage.getItem("guruai_chat_history") || "[]"
+        );
+    } catch (error) {
+        console.error("History error:", error);
+        return [];
+    }
+}
+
+function saveChatHistory(history) {
+    localStorage.setItem(
+        "guruai_chat_history",
+        JSON.stringify(history)
+    );
+}
+
+function createChat() {
+    const chat = {
+        id: Date.now().toString(),
+        title: "New Chat",
+        createdAt: new Date().toISOString(),
+        messages: []
+    };
+
+    const history = getChatHistory();
+    history.unshift(chat);
+    saveChatHistory(history);
+
+    currentChatId = chat.id;
+    return chat;
+}
+
+function newChat() {
+    currentChatId = null;
+
+    document.getElementById("chatMessages").innerHTML = "";
+
+    addMessage(
+        "ai",
+        "Hello! I'm GURUAI. How can I help you today?"
+    );
 
     showPage("chat");
 
-    document.getElementById(
-        "message"
-    ).focus();
+    document.getElementById("message").focus();
 }
 
 
 /* ================= SEND MESSAGE ================= */
 
-async function sendMessage(){
+async function sendMessage() {
 
-    const input =
-    document.getElementById("message");
+    const input = document.getElementById("message");
+    const text = input.value.trim();
 
-    const text =
-    input.value.trim();
-
-    if(!text) return;
+    if (!text) return;
 
     showPage("chat");
 
-    addMessage("user",text);
+    if (!currentChatId) {
+        createChat();
+    }
 
-    input.value="";
+    const history = getChatHistory();
 
-    const thinking =
-    addMessage("ai","Thinking...");
+    const chat = history.find(
+        item => item.id === currentChatId
+    );
 
-    try{
+    if (!chat) return;
+
+    chat.messages.push({
+        role: "user",
+        text: text,
+        time: new Date().toISOString()
+    });
+
+    if (chat.title === "New Chat") {
+        chat.title =
+            text.length > 50
+            ? text.substring(0, 50) + "..."
+            : text;
+    }
+
+    saveChatHistory(history);
+
+    addMessage("user", text);
+
+    input.value = "";
+
+    const thinking = addMessage("ai", "Thinking...");
+
+    try {
 
         const response = await fetch(
-    "https://guruai-1.onrender.com/chat"
-    {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            message: text
-        })
-    }
-);
-        method: "POST",
-
-        headers: {
-            "Content-Type": "application/json"
-        },
-
-        body: JSON.stringify({
-            message: text
-        })
-    }
-);
-                method:"POST",
-
-                headers:{
-                    "Content-Type":
-                    "application/json"
+            "https://soft-poetry-efd7.artistayushjaiswal.workers.dev/chat",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
                 },
-
-                body:JSON.stringify({
-                    message:text
+                body: JSON.stringify({
+                    message: text
                 })
             }
         );
 
-        if(!response.ok){
-            throw new Error(
-                "Server error"
-            );
+        if (!response.ok) {
+            throw new Error("Server error");
         }
 
-        const data =
-        await response.json();
+        const data = await response.json();
 
-        thinking.textContent =
-        data.reply ||
-        "No response received.";
+        const reply =
+            data.reply || "No response received.";
 
-    }
+        thinking.textContent = reply;
 
-    catch(error){
+        chat.messages.push({
+            role: "ai",
+            text: reply,
+            time: new Date().toISOString()
+        });
+
+        saveChatHistory(history);
+
+    } catch (error) {
 
         console.error(error);
 
-        thinking.textContent =
-        "âš ï¸ Could not connect to GURUAI. Make sure server.js is running.";
+        const reply = "Could not connect to GURUAI.";
 
+        thinking.textContent = reply;
+
+        chat.messages.push({
+            role: "ai",
+            text: reply,
+            time: new Date().toISOString()
+        });
+
+        saveChatHistory(history);
     }
 }
+
+
+/* ================= GURUAI HISTORY TOOLS v1 ================= */
+
+function renameCurrentChat() {
+    if (!currentChatId) {
+        alert("Open a chat first.");
+        return;
+    }
+
+    const history = getChatHistory();
+    const chat = history.find(item => item.id === currentChatId);
+    if (!chat) return;
+
+    const nextTitle = prompt("Rename chat:", chat.title || "New Chat");
+    if (!nextTitle) return;
+
+    const title = nextTitle.trim();
+    if (!title) return;
+
+    chat.title = title.substring(0, 80);
+    saveChatHistory(history);
+    renderHistory();
+}
+
+function deleteCurrentChat(id) {
+    const targetId = id || currentChatId;
+    if (!targetId) return;
+
+    const history = getChatHistory();
+    const chat = history.find(item => item.id === targetId);
+    if (!chat) return;
+
+    if (!confirm('Delete "' + (chat.title || "New Chat") + '"?')) return;
+
+    saveChatHistory(history.filter(item => item.id !== targetId));
+
+    if (currentChatId === targetId) {
+        currentChatId = null;
+
+        const messages = document.getElementById("chatMessages");
+
+        if (messages) {
+            messages.innerHTML = "";
+            addMessage("ai", "Hello! I'm GURUAI. How can I help you today?");
+        }
+    }
+
+    renderHistory();
+}
+
+function clearAllHistory() {
+    const history = getChatHistory();
+
+    if (!history.length) {
+        renderHistory();
+        return;
+    }
+
+    if (!confirm("Clear all saved GURUAI conversations?")) return;
+
+    localStorage.removeItem("guruai_chat_history");
+    currentChatId = null;
+    renderHistory();
+}
+
+function exportCurrentChat() {
+    if (!currentChatId) {
+        alert("Open a chat first.");
+        return;
+    }
+
+    const history = getChatHistory();
+    const chat = history.find(item => item.id === currentChatId);
+    if (!chat) return;
+
+    let output = "GURUAI CHAT EXPORT\n\n";
+
+    output += "Title: " + (chat.title || "New Chat") + "\n";
+    output += "Created: " + (chat.createdAt || "") + "\n\n";
+
+    output += "----------------------------------------\n\n";
+
+    (chat.messages || []).forEach(message => {
+        output += (message.role === "user" ? "You" : "GURUAI") + ":\n";
+        output += (message.text || "") + "\n\n";
+    });
+
+    const blob = new Blob(
+        [output],
+        { type: "text/plain;charset=utf-8" }
+    );
+
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+
+    a.download =
+        ((chat.title || "guruai-chat")
+        .replace(/[\\/:*?"<>|]/g, "_")) + ".txt";
+
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    URL.revokeObjectURL(url);
+}
+
+function refreshHistory() {
+    renderHistory();
+}
+
+function guruaiHistoryToolbar() {
+    const container = document.getElementById("historyList");
+
+    if (!container || document.getElementById("guruaiHistoryToolbar")) {
+        return;
+    }
+
+    const toolbar = document.createElement("div");
+
+    toolbar.id = "guruaiHistoryToolbar";
+
+    toolbar.style.cssText =
+        "display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;";
+
+    const makeButton = (label, handler) => {
+        const button = document.createElement("button");
+
+        button.type = "button";
+        button.textContent = label;
+
+        button.style.cssText =
+            "padding:9px 13px;border-radius:9px;" +
+            "border:1px solid #343844;" +
+            "background:#171a21;color:#fff;" +
+            "cursor:pointer;";
+
+        button.onclick = handler;
+
+        return button;
+    };
+
+    toolbar.appendChild(
+        makeButton("Refresh", refreshHistory)
+    );
+
+    toolbar.appendChild(
+        makeButton("Export Current Chat", exportCurrentChat)
+    );
+
+    toolbar.appendChild(
+        makeButton("Clear All History", clearAllHistory)
+    );
+
+    container.parentNode.insertBefore(toolbar, container);
+}
+
+const originalRenderHistory = renderHistory;
+
+renderHistory = function() {
+
+    originalRenderHistory();
+
+    guruaiHistoryToolbar();
+
+    const container = document.getElementById("historyList");
+
+    if (!container) return;
+
+    const history = getChatHistory();
+
+    Array.from(container.children).forEach((item, index) => {
+
+        const chat = history[index];
+
+        if (!chat || item.dataset.guruaiTools === "1") {
+            return;
+        }
+
+        item.dataset.guruaiTools = "1";
+
+        item.style.position = "relative";
+        item.style.paddingRight = "170px";
+
+        const actions = document.createElement("div");
+
+        actions.style.cssText =
+            "position:absolute;right:12px;top:50%;" +
+            "transform:translateY(-50%);" +
+            "display:flex;gap:6px;";
+
+        const rename = document.createElement("button");
+
+        rename.type = "button";
+        rename.textContent = "Rename";
+
+        rename.style.cssText =
+            "padding:7px 9px;border-radius:7px;" +
+            "border:1px solid #343844;" +
+            "background:#171a21;color:#fff;" +
+            "cursor:pointer;";
+
+        rename.onclick = function(event) {
+            event.stopPropagation();
+            currentChatId = chat.id;
+            renameCurrentChat();
+        };
+
+        const del = document.createElement("button");
+
+        del.type = "button";
+        del.textContent = "Delete";
+
+        del.style.cssText =
+            "padding:7px 9px;border-radius:7px;" +
+            "border:1px solid #5a3030;" +
+            "background:#211316;color:#ff9d9d;" +
+            "cursor:pointer;";
+
+        del.onclick = function(event) {
+            event.stopPropagation();
+            deleteCurrentChat(chat.id);
+        };
+
+        actions.appendChild(rename);
+        actions.appendChild(del);
+
+        item.appendChild(actions);
+    });
+};
+
+
+/* ================= HISTORY DISPLAY ================= */
+
+function renderHistory() {
+
+    const container =
+        document.getElementById("historyList");
+
+    if (!container) return;
+
+    const history = getChatHistory();
+
+    container.innerHTML = "";
+
+    if (history.length === 0) {
+
+        container.innerHTML = `
+            <div style="padding:30px;text-align:center;">
+                <h3>No conversations yet</h3>
+                <p>Start chatting with GURUAI and your conversations will appear here.</p>
+            </div>
+        `;
+
+        return;
+    }
+
+    history.forEach(chat => {
+
+        const item =
+            document.createElement("div");
+
+        item.style.cssText = `
+            padding:18px;
+            margin-bottom:12px;
+            border-radius:14px;
+            cursor:pointer;
+            background:rgba(255,255,255,0.06);
+            border:1px solid rgba(255,255,255,0.08);
+        `;
+
+        const title =
+            document.createElement("div");
+
+        title.textContent =
+            chat.title || "New Chat";
+
+        title.style.fontWeight = "600";
+
+        const info =
+            document.createElement("div");
+
+        info.textContent =
+            `${chat.messages.length} messages`;
+
+        info.style.cssText =
+            "opacity:.6;font-size:13px;margin-top:5px;";
+
+        item.appendChild(title);
+        item.appendChild(info);
+
+        item.onclick = function() {
+            loadChat(chat.id);
+        };
+
+        container.appendChild(item);
+    });
+}
+
+
+/* ================= LOAD CHAT ================= */
+
+function loadChat(id) {
+
+    const history = getChatHistory();
+
+    const chat =
+        history.find(item => item.id === id);
+
+    if (!chat) return;
+
+    currentChatId = chat.id;
+
+    const messages =
+        document.getElementById("chatMessages");
+
+    messages.innerHTML = "";
+
+    chat.messages.forEach(message => {
+
+        addMessage(
+            message.role,
+            message.text
+        );
+
+    });
+
+    showPage("chat");
+}
+
+
+/* ================= DELETE CHAT ================= */
+
+function deleteChat(id) {
+
+    const history =
+        getChatHistory();
+
+    const updated =
+        history.filter(
+            chat => chat.id !== id
+        );
+
+    saveChatHistory(updated);
+
+    if (currentChatId === id) {
+        currentChatId = null;
+    }
+
+    renderHistory();
+}
+
+
+/* ================= HISTORY PAGE HOOK ================= */
+
+const originalShowPage = showPage;
+
+showPage = function(page, button) {
+
+    originalShowPage(page, button);
+
+    if (page === "history") {
+        renderHistory();
+    }
+};
 
 
 /* ================= ADD MESSAGE ================= */
@@ -1743,7 +2313,653 @@ document
     }
 );
 
+
+/* ================= GURUAI SETTINGS TOOLS v1 ================= */
+
+function guruaiExportData() {
+    const data = {};
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key) data[key] = localStorage.getItem(key);
+    }
+
+    const blob = new Blob(
+        [JSON.stringify(data, null, 2)],
+        { type: "application/json;charset=utf-8" }
+    );
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "guruai-data-backup.json";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+}
+
+function guruaiClearLocalData() {
+    if (!confirm(
+        "Clear all GURUAI local data?\n\n" +
+        "This includes saved chat history and local account/session data."
+    )) return;
+
+    localStorage.clear();
+    alert("GURUAI local data has been cleared.");
+    location.reload();
+}
+
+function guruaiResetSettings() {
+    if (!confirm("Reset GURUAI settings to default?")) return;
+
+    localStorage.removeItem("guruai_settings");
+    alert("GURUAI settings have been reset.");
+    location.reload();
+}
+
+function guruaiShowAppInfo() {
+    alert(
+        "GURUAI\n\n" +
+        "Version: 1.0.0\n" +
+        "AI Platform: GURUAI Cloud AI\n" +
+        "Interface: GURUAI Web App\n\n" +
+        "Owner: Ayush"
+    );
+}
+
+function guruaiSettingsTools() {
+    const page = document.getElementById("settings");
+
+    if (!page || document.getElementById("guruaiSettingsTools")) return;
+
+    const box = document.createElement("div");
+    box.id = "guruaiSettingsTools";
+    box.className = "settings-box";
+
+    box.innerHTML =
+        '<h3>GURUAI Controls</h3>' +
+        '<p>Manage your local GURUAI data and application settings.</p>' +
+        '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;">' +
+
+        '<button type="button" id="guruaiExportDataBtn" ' +
+        'style="padding:10px 14px;border-radius:9px;border:1px solid #343844;background:#171a21;color:#fff;cursor:pointer;">' +
+        'Export Data</button>' +
+
+        '<button type="button" id="guruaiResetSettingsBtn" ' +
+        'style="padding:10px 14px;border-radius:9px;border:1px solid #343844;background:#171a21;color:#fff;cursor:pointer;">' +
+        'Reset Settings</button>' +
+
+        '<button type="button" id="guruaiAppInfoBtn" ' +
+        'style="padding:10px 14px;border-radius:9px;border:1px solid #343844;background:#171a21;color:#fff;cursor:pointer;">' +
+        'App Info</button>' +
+
+        '<button type="button" id="guruaiClearDataBtn" ' +
+        'style="padding:10px 14px;border-radius:9px;border:1px solid #5a3030;background:#211316;color:#ff9d9d;cursor:pointer;">' +
+        'Clear Local Data</button>' +
+
+        '</div>';
+
+    page.appendChild(box);
+
+    document.getElementById("guruaiExportDataBtn").onclick = guruaiExportData;
+    document.getElementById("guruaiResetSettingsBtn").onclick = guruaiResetSettings;
+    document.getElementById("guruaiAppInfoBtn").onclick = guruaiShowAppInfo;
+    document.getElementById("guruaiClearDataBtn").onclick = guruaiClearLocalData;
+}
+
+const guruaiOriginalShowPageForSettings = showPage;
+
+showPage = function(page, button) {
+    guruaiOriginalShowPageForSettings(page, button);
+
+    if (page === "settings") {
+        guruaiSettingsTools();
+    }
+};
+
+document.addEventListener("DOMContentLoaded", function() {
+    if (document.getElementById("settings")) {
+        guruaiSettingsTools();
+    }
+});
+
+/* ================= GURUAI LENS UI v1 ================= */
+
+function guruaiLensUI() {
+    const page = document.getElementById("lens");
+
+    if (!page || document.getElementById("guruaiLensUpgrade")) {
+        return;
+    }
+
+    const box = document.createElement("div");
+    box.id = "guruaiLensUpgrade";
+    box.className = "settings-box";
+
+    box.innerHTML =
+        '<h3>ðŸ” GURU Lens</h3>' +
+        '<p>Upload an image and ask GURUAI about it.</p>' +
+
+        '<input id="guruaiLensFile" type="file" accept="image/*" ' +
+        'style="display:block;margin:14px 0;width:100%;padding:10px;' +
+        'border:1px solid #343844;border-radius:9px;background:#171a21;color:#fff;">' +
+
+        '<div id="guruaiLensPreview" style="display:none;margin:14px 0;text-align:center;">' +
+        '<img id="guruaiLensImage" alt="Selected image" ' +
+        'style="max-width:100%;max-height:320px;border-radius:12px;object-fit:contain;">' +
+        '</div>' +
+
+        '<textarea id="guruaiLensQuestion" rows="3" ' +
+        'placeholder="Ask something about this image..." ' +
+        'style="width:100%;box-sizing:border-box;padding:12px;border-radius:9px;' +
+        'border:1px solid #343844;background:#171a21;color:#fff;resize:vertical;">' +
+        '</textarea>' +
+
+        '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">' +
+
+        '<button type="button" id="guruaiLensAnalyzeBtn" ' +
+        'style="padding:10px 16px;border:0;border-radius:9px;' +
+        'background:#fff;color:#111;cursor:pointer;">' +
+        'ðŸ” Analyze Image</button>' +
+
+        '<button type="button" id="guruaiLensRemoveBtn" ' +
+        'style="padding:10px 16px;border:1px solid #343844;border-radius:9px;' +
+        'background:#171a21;color:#fff;cursor:pointer;">' +
+        'Remove Image</button>' +
+
+        '</div>' +
+
+        '<div id="guruaiLensStatus" style="margin-top:14px;"></div>' +
+
+        '<div id="guruaiLensResult" style="display:none;margin-top:16px;' +
+        'padding:14px;border-radius:10px;background:#11141a;' +
+        'border:1px solid #292d36;white-space:pre-wrap;"></div>';
+
+    page.appendChild(box);
+
+    const fileInput = document.getElementById("guruaiLensFile");
+    const preview = document.getElementById("guruaiLensPreview");
+    const image = document.getElementById("guruaiLensImage");
+    const question = document.getElementById("guruaiLensQuestion");
+    const analyze = document.getElementById("guruaiLensAnalyzeBtn");
+    const remove = document.getElementById("guruaiLensRemoveBtn");
+    const status = document.getElementById("guruaiLensStatus");
+    const result = document.getElementById("guruaiLensResult");
+
+    let selectedImage = null;
+
+    fileInput.addEventListener("change", function() {
+        const file = fileInput.files && fileInput.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        if (!file.type.startsWith("image/")) {
+            status.textContent = "Please select an image file.";
+            fileInput.value = "";
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function(event) {
+            selectedImage = {
+                data: String(event.target.result).split(",")[1],
+                mimeType: file.type
+            };
+
+            image.src = event.target.result;
+            preview.style.display = "block";
+            result.style.display = "none";
+            status.textContent = "Image ready.";
+        };
+
+        reader.onerror = function() {
+            selectedImage = null;
+            status.textContent = "Could not read the image.";
+        };
+
+        reader.readAsDataURL(file);
+    });
+
+    remove.addEventListener("click", function() {
+        selectedImage = null;
+        fileInput.value = "";
+        image.removeAttribute("src");
+        preview.style.display = "none";
+        result.style.display = "none";
+        status.textContent = "";
+    });
+
+    analyze.addEventListener("click", async function() {
+        if (!selectedImage) {
+            status.textContent = "Please select an image first.";
+            return;
+        }
+
+        analyze.disabled = true;
+        analyze.textContent = "Analyzing...";
+        status.textContent = "GURUAI is preparing your image analysis...";
+        result.style.display = "none";
+
+        try {
+            const endpoint =
+                "https://soft-poetry-efd7.artistayushjaiswal.workers.dev/analyze-image";
+
+            const response = await fetch(endpoint, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    image: selectedImage.data,
+                    mimeType: selectedImage.mimeType,
+                    question:
+                        question.value.trim() ||
+                        "Analyze this image and explain what you see."
+                })
+            });
+
+            const data = await response.json().catch(() => ({}));
+
+            if (!response.ok) {
+                throw new Error(
+                    data.reply || "GURU Lens service is unavailable."
+                );
+            }
+
+            result.textContent =
+                data.reply || "No analysis was returned.";
+
+            result.style.display = "block";
+            status.textContent = "Analysis complete.";
+        }
+        catch (error) {
+            result.textContent =
+                error && error.message
+                    ? error.message
+                    : "GURU Lens could not analyze the image.";
+
+            result.style.display = "block";
+            status.textContent = "Analysis failed.";
+        }
+        finally {
+            analyze.disabled = false;
+            analyze.textContent = "ðŸ” Analyze Image";
+        }
+    });
+}
+
+const guruaiOriginalShowPageForLens = showPage;
+
+showPage = function(page, button) {
+    guruaiOriginalShowPageForLens(page, button);
+
+    if (page === "lens") {
+        guruaiLensUI();
+    }
+};
+
+document.addEventListener("DOMContentLoaded", function() {
+    if (document.getElementById("lens")) {
+        guruaiLensUI();
+    }
+});
+
+
+/* ================= GURUAI STUDY MODE v1 ================= */
+
+function guruaiStudyModeUI() {
+    const page = document.getElementById("study");
+
+    if (!page || document.getElementById("guruaiStudyUpgrade")) {
+        return;
+    }
+
+    const box = document.createElement("div");
+    box.id = "guruaiStudyUpgrade";
+    box.className = "lens-box";
+
+    box.innerHTML =
+        '<h2>Study Session Builder</h2>' +
+        '<p>Create a focused study prompt for GURUAI.</p>' +
+
+        '<div style="display:grid;gap:12px;margin-top:16px;">' +
+
+        '<input id="guruaiStudyClass" type="text" ' +
+        'placeholder="Class / Grade (e.g. Class 10)" ' +
+        'style="width:100%;box-sizing:border-box;padding:12px;border-radius:9px;' +
+        'border:1px solid #343844;background:#171a21;color:#fff;">' +
+
+        '<input id="guruaiStudySubject" type="text" ' +
+        'placeholder="Subject (e.g. Mathematics)" ' +
+        'style="width:100%;box-sizing:border-box;padding:12px;border-radius:9px;' +
+        'border:1px solid #343844;background:#171a21;color:#fff;">' +
+
+        '<input id="guruaiStudyTopic" type="text" ' +
+        'placeholder="Topic (e.g. Quadratic Equations)" ' +
+        'style="width:100%;box-sizing:border-box;padding:12px;border-radius:9px;' +
+        'border:1px solid #343844;background:#171a21;color:#fff;">' +
+
+        '<select id="guruaiStudyLevel" ' +
+        'style="width:100%;box-sizing:border-box;padding:12px;border-radius:9px;' +
+        'border:1px solid #343844;background:#171a21;color:#fff;">' +
+        '<option value="beginner">Beginner</option>' +
+        '<option value="intermediate">Intermediate</option>' +
+        '<option value="advanced">Advanced</option>' +
+        '</select>' +
+
+        '<select id="guruaiStudyStyle" ' +
+        'style="width:100%;box-sizing:border-box;padding:12px;border-radius:9px;' +
+        'border:1px solid #343844;background:#171a21;color:#fff;">' +
+        '<option value="step-by-step">Step-by-step explanation</option>' +
+        '<option value="examples">Examples and practice</option>' +
+        '<option value="quiz">Quiz me</option>' +
+        '<option value="revision">Quick revision</option>' +
+        '</select>' +
+
+        '<button type="button" id="guruaiBuildStudyBtn" ' +
+        'style="padding:12px 16px;border:0;border-radius:9px;' +
+        'background:#fff;color:#111;cursor:pointer;">' +
+        'Start Study Session</button>' +
+
+        '</div>' +
+
+        '<div id="guruaiStudyStatus" style="margin-top:14px;"></div>';
+
+    page.appendChild(box);
+
+    document.getElementById("guruaiBuildStudyBtn").onclick = function() {
+        const studentClass =
+            document.getElementById("guruaiStudyClass").value.trim();
+
+        const subject =
+            document.getElementById("guruaiStudySubject").value.trim();
+
+        const topic =
+            document.getElementById("guruaiStudyTopic").value.trim();
+
+        const level =
+            document.getElementById("guruaiStudyLevel").value;
+
+        const style =
+            document.getElementById("guruaiStudyStyle").value;
+
+        const status =
+            document.getElementById("guruaiStudyStatus");
+
+        if (!subject || !topic) {
+            status.textContent =
+                "Please enter at least a subject and topic.";
+            return;
+        }
+
+        const prompt =
+            "You are my GURUAI study tutor. " +
+            "Help me study this topic clearly and accurately. " +
+            "Class/Grade: " + (studentClass || "Not specified") + ". " +
+            "Subject: " + subject + ". " +
+            "Topic: " + topic + ". " +
+            "Level: " + level + ". " +
+            "Learning style: " + style + ". " +
+            "Explain at an appropriate level, use clear examples, " +
+            "and check my understanding when useful.";
+
+        status.textContent = "Opening your study session...";
+
+        if (typeof sendPreset === "function") {
+            sendPreset(prompt);
+        } else {
+            status.textContent =
+                "Study session could not be opened.";
+        }
+    };
+}
+
+const guruaiOriginalShowPageForStudy = showPage;
+
+showPage = function(page, button) {
+    guruaiOriginalShowPageForStudy(page, button);
+
+    if (page === "study") {
+        guruaiStudyModeUI();
+    }
+};
+
+document.addEventListener("DOMContentLoaded", function() {
+    if (document.getElementById("study")) {
+        guruaiStudyModeUI();
+    }
+});
+
 </script>
 
+
+<script>
+/* ================= GURUAI AI TOOLS v1 ================= */
+
+function guruaiToolsUI(){
+    if(document.getElementById("guruaiToolsPanel")) return;
+
+    const page = document.getElementById("tools");
+    if(!page) return;
+
+    const box = document.createElement("div");
+    box.id = "guruaiToolsPanel";
+    box.className = "lens-box";
+    box.style.marginTop = "20px";
+
+    box.innerHTML = `
+        <h3>🛠️ GURUAI AI Tools</h3>
+        <p style="opacity:.8">Choose a tool, enter what you need, and GURUAI will prepare the request for you.</p>
+
+        <select id="guruaiToolSelect" style="width:100%;padding:12px;margin:10px 0;border-radius:10px;">
+            <option value="study">📚 Study Assistant</option>
+            <option value="writing">✍️ Writing Assistant</option>
+            <option value="coding">💻 Coding Assistant</option>
+            <option value="ideas">💡 Idea Generator</option>
+            <option value="explain">🧠 Explain Anything</option>
+            <option value="summary">📝 Summarizer</option>
+            <option value="translate">🌐 Translator</option>
+            <option value="homework">📖 Homework Helper</option>
+            <option value="project">🚀 Project Assistant</option>
+        </select>
+
+        <textarea id="guruaiToolInput"
+            placeholder="Describe what you want GURUAI to help with..."
+            style="width:100%;min-height:130px;padding:12px;border-radius:10px;resize:vertical;"></textarea>
+
+        <button id="guruaiToolRunBtn"
+            style="margin-top:12px;width:100%;padding:13px;border-radius:10px;cursor:pointer;">
+            ✨ Use Tool
+        </button>
+
+        <div id="guruaiToolStatus" style="margin-top:12px;opacity:.8;"></div>
+    `;
+
+    page.appendChild(box);
+
+    document.getElementById("guruaiToolRunBtn").onclick = guruaiRunTool;
+}
+
+function guruaiRunTool(){
+    const type = document.getElementById("guruaiToolSelect").value;
+    const input = document.getElementById("guruaiToolInput").value.trim();
+    const status = document.getElementById("guruaiToolStatus");
+
+    if(!input){
+        status.textContent = "Please enter something for the tool.";
+        return;
+    }
+
+    const prompts = {
+        study: `Act as my Study Assistant. Help me understand this clearly and step by step:\n\n${input}`,
+        writing: `Act as my Writing Assistant. Improve or rewrite the following while keeping the meaning:\n\n${input}`,
+        coding: `Act as my Coding Assistant. Analyze the following request/code and give a clear solution with code when useful:\n\n${input}`,
+        ideas: `Act as my Idea Generator. Give me several useful and creative ideas based on:\n\n${input}`,
+        explain: `Explain the following in simple language, then give examples:\n\n${input}`,
+        summary: `Summarize the following clearly. Keep the important points and remove unnecessary detail:\n\n${input}`,
+        translate: `Translate the following text. Preserve meaning and natural wording:\n\n${input}`,
+        homework: `Act as a Homework Helper. Guide me through this problem step by step and explain the reasoning:\n\n${input}`,
+        project: `Act as my Project Assistant. Help me plan and execute this project with practical steps:\n\n${input}`
+    };
+
+    const prompt = prompts[type] || input;
+
+    status.textContent = "Opening GURUAI Chat...";
+
+    if(typeof sendPreset === "function"){
+        sendPreset(prompt);
+    } else {
+        status.textContent = "Chat is not available yet.";
+    }
+}
+
+const guruaiOriginalShowPageForTools =
+    typeof showPage === "function" ? showPage : null;
+
+if(guruaiOriginalShowPageForTools){
+    showPage = function(page){
+        guruaiOriginalShowPageForTools(page);
+        if(page === "tools"){
+            setTimeout(guruaiToolsUI, 50);
+        }
+    };
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+    if(document.getElementById("tools")) guruaiToolsUI();
+});
+
+</script>
+
+<script>
+/* ================= GURUAI AUTH UI v1 ================= */
+
+function guruaiAuthUI(){
+
+    if(document.getElementById("guruaiAccountPanel")) return;
+
+    const settings = document.getElementById("settings");
+    if(!settings) return;
+
+    const panel = document.createElement("div");
+    panel.id = "guruaiAccountPanel";
+    panel.className = "lens-box";
+    panel.style.marginTop = "20px";
+
+    panel.innerHTML = `
+        <h3>👤 GURUAI Account</h3>
+        <div id="guruaiAccountStatus" style="margin:10px 0;opacity:.85;"></div>
+
+        <div id="guruaiAccountActions" style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button id="guruaiAccountLoginBtn">Login / Sign Up</button>
+            <button id="guruaiAccountLogoutBtn" style="display:none;">Logout</button>
+        </div>
+    `;
+
+    settings.appendChild(panel);
+
+    guruaiRefreshAccountUI();
+
+    const loginBtn = document.getElementById("guruaiAccountLoginBtn");
+    const logoutBtn = document.getElementById("guruaiAccountLogoutBtn");
+
+    if(loginBtn){
+        loginBtn.onclick = function(){
+            if(typeof showPage === "function"){
+                showPage("auth");
+            } else {
+                window.location.href = "auth.html";
+            }
+        };
+    }
+
+    if(logoutBtn){
+        logoutBtn.onclick = function(){
+            if(typeof logout === "function"){
+                logout();
+            } else {
+                localStorage.removeItem("guruai_current_user");
+                guruaiRefreshAccountUI();
+            }
+        };
+    }
+}
+
+function guruaiRefreshAccountUI(){
+
+    const status = document.getElementById("guruaiAccountStatus");
+    const loginBtn = document.getElementById("guruaiAccountLoginBtn");
+    const logoutBtn = document.getElementById("guruaiAccountLogoutBtn");
+
+    if(!status) return;
+
+    const user = localStorage.getItem("guruai_current_user");
+
+    if(user){
+
+        status.innerHTML =
+            "Signed in as <strong>" +
+            guruaiEscapeHTML(user) +
+            "</strong>";
+
+        if(loginBtn) loginBtn.style.display = "none";
+        if(logoutBtn) logoutBtn.style.display = "inline-block";
+
+    } else {
+
+        status.textContent = "You are currently using GURUAI as a guest.";
+
+        if(loginBtn) loginBtn.style.display = "inline-block";
+        if(logoutBtn) logoutBtn.style.display = "none";
+    }
+}
+
+function guruaiEscapeHTML(value){
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+const guruaiOriginalShowPageForAuth =
+    typeof showPage === "function" ? showPage : null;
+
+if(guruaiOriginalShowPageForAuth){
+
+    showPage = function(page){
+
+        guruaiOriginalShowPageForAuth(page);
+
+        if(page === "settings"){
+            setTimeout(guruaiAuthUI,50);
+            setTimeout(guruaiRefreshAccountUI,100);
+        }
+    };
+}
+
+document.addEventListener("DOMContentLoaded",function(){
+
+    if(document.getElementById("settings")){
+        guruaiAuthUI();
+    }
+
+});
+
+window.addEventListener("storage",function(){
+
+    guruaiRefreshAccountUI();
+
+});
+
+</script>
 </body>
 </html>
+
+
+
