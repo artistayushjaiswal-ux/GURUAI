@@ -899,7 +899,7 @@ li {
     overflow-wrap: anywhere;
 }
 </style>
-</head>
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0b0f19">`r`n</head>
 
 <body>
 
@@ -2958,8 +2958,9 @@ window.addEventListener("storage",function(){
 });
 
 </script>
-</body>
+<script>if ("serviceWorker" in navigator) { window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function(error) { console.warn("GURUAI Service Worker registration failed:", error); }); }); }</script>`r`n</body>
 </html>
+
 
 
 
