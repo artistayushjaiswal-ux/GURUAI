@@ -5,7 +5,7 @@ const cors = require("cors");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json({ limit: "15mb" }));
@@ -14,9 +14,17 @@ app.use(express.json({ limit: "15mb" }));
 // GEMINI
 // ===============================
 
+if (!process.env.GEMINI_API_KEY) {
+    console.warn("GEMINI_API_KEY is not set. AI endpoints will fail until it is configured.");
+}
+
 const genAI = new GoogleGenerativeAI(
-    process.env.GEMINI_API_KEY
+    process.env.GEMINI_API_KEY || ""
 );
+
+const getModel = () => genAI.getGenerativeModel({
+    model: "gemini-2.5-flash"
+});
 
 // ===============================
 // HOME
@@ -42,17 +50,11 @@ app.post("/chat", async (req, res) => {
             });
         }
 
-        const model = genAI.getGenerativeModel({
-            model: "gemini-3.6-flash"
-        });
-
+        const model = getModel();
         const result = await model.generateContent(message);
-
         const reply = result.response.text();
 
-        res.json({
-            reply: reply
-        });
+        res.json({ reply });
 
     } catch (error) {
         console.log("Gemini connection failed.");
@@ -71,10 +73,7 @@ app.post("/chat", async (req, res) => {
 app.post("/analyze-image", async (req, res) => {
     try {
         const image = req.body.image;
-
-        const mimeType =
-            req.body.mimeType || "image/jpeg";
-
+        const mimeType = req.body.mimeType || "image/jpeg";
         const question = (
             req.body.question ||
             "Analyze this image and explain what you see."
@@ -86,10 +85,7 @@ app.post("/analyze-image", async (req, res) => {
             });
         }
 
-        const model = genAI.getGenerativeModel({
-            model: "gemini-3.6-flash"
-        });
-
+        const model = getModel();
         const imagePart = {
             inlineData: {
                 data: image,
@@ -104,9 +100,7 @@ app.post("/analyze-image", async (req, res) => {
 
         const reply = result.response.text();
 
-        res.json({
-            reply: reply
-        });
+        res.json({ reply });
 
     } catch (error) {
         console.log("GURU Lens error:");
@@ -231,9 +225,7 @@ app.get("/admin", (req, res) => {
 // ===============================
 
 app.listen(PORT, () => {
-
     console.log(
-        "GURUAI Cloud AI running at http://localhost:3000"
+        `GURUAI Cloud AI running at http://localhost:${PORT}`
     );
-
 });
