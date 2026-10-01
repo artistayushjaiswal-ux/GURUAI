@@ -1,0 +1,36 @@
+# NEXORA
+
+NEXORA is a multi-purpose AI app being developed from the existing GURUAI prototype.
+
+## Planned features
+
+- AI chat
+- Image analysis (NEXORA Lens)
+- Study and writing tools
+- Responsive web interface
+- Android and desktop support
+- Owner and admin controls
+
+## Requirements
+
+- Node.js and npm
+- Git
+- A valid AI provider API key for AI features
+
+## Setup
+
+1. Clone the repository.
+2. Install dependencies with `npm ci`.
+3. Copy `.env.example` to `.env`.
+4. Add your own API key to the local `.env` file.
+5. Start the application using the appropriate script in `package.json`.
+
+Never commit `.env`, passwords, or API keys.
+
+## Development checks
+
+Run the available syntax checks and tests before submitting changes. Review the GitHub Actions results after pushing changes.
+
+## Project status
+
+NEXORA is under active development. Features and security controls must be verified before production use.
